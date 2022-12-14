@@ -60,12 +60,8 @@
         <c8y-form-group>
           <label translate for="icon">Icon</label>
           <div class="dropdown" dropdown>
-            <button
-              type="button"
-              title="dropdown-toggle"
-              dropdownToggle
-              class="btn btn-default dropdown-toggle c8y-dropdown"
-            >
+            <button type="button" title="dropdown-toggle" dropdownToggle
+              class="btn btn-default dropdown-toggle c8y-dropdown">
               <span><i [c8yIcon]="item.icon"></i> {{item.icon}}</span> <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" *dropdownMenu>
@@ -74,9 +70,22 @@
                   <i [c8yIcon]="iconClass"></i> {{ iconClass }}
                 </button>
               </li>
-             
+
             </ul>
           </div>
+        </c8y-form-group>
+
+        <c8y-form-group>
+          <label translate for="icon">Requires confirmation</label>
+          <label class="c8y-switch" title="{{ 'Active' | translate }}">
+            <input type="checkbox" [(ngModel)]="item.showModal" />
+            <span></span>
+            <span>
+              {{ 'Show Modal'}}
+            </span>
+          </label>
+          <input *ngIf="item.showModal" id="modalText" class="form-control" type="text" name="description"
+            [maxlength]="254" autocomplete="off" placeholder="e.g. Restart device" [(ngModel)]="item.modalText" />
         </c8y-form-group>
 
         <div class="d-flex j-c-center a-i-center">
