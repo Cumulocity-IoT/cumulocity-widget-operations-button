@@ -2,9 +2,9 @@
   <fieldset>
     <div class="legend form-block">Button {{ buttonIndex + 1 }}</div>
     <div class="d-flex a-i-stretch">
-      <div class="d-flex a-i-center j-c-center">
+<!--       <div class="d-flex a-i-center j-c-center">
         <app-button-instance class="p-32" [config]="item"></app-button-instance>
-      </div>
+      </div> -->
       <div class="flex-grow">
         <c8y-form-group [hasWarning]="!item.label || item.label.length === 0">
           <label translate for="label">Label</label>
@@ -48,33 +48,38 @@
         </c8y-form-group>
 
         <c8y-form-group>
-          <label translate for="buttonClasses">Button class</label>
-          <div class="c8y-select-wrapper">
-            <select class="form-control" id="buttonClasses" name="buttonClasses" [(ngModel)]="item.buttonClasses"
-              required>
-              <option [value]="class" *ngFor="let class of buttonClasses">{{ class }}</option>
-            </select>
+          <label translate for="buttonClasses">Button</label>
+          <div class="dropdown" dropdown>
+            <button type="button" title="dropdown-toggle" dropdownToggle
+              [ngClass]="'btn btn-default dropdown-toggle c8y-dropdown ' + item.buttonClasses">
+              <span><i [c8yIcon]="item.icon"></i> {{item.label}}</span> <span class="caret"></span>
+            </button>
+
+            <ul class="dropdown-menu" *dropdownMenu>
+              <li (click)="item.buttonClasses = class" *ngFor="let class of buttonClasses">
+                <button type="button" [ngClass]="'btn ' + class">
+                  <i [c8yButton]="item.button" [c8yIcon]="item.icon"></i> {{item.label}}
+                </button>
+              </li>
+
+            </ul>
           </div>
         </c8y-form-group>
 
         <c8y-form-group>
           <label translate for="icon">Icon</label>
           <div class="dropdown" dropdown>
-            <button
-              type="button"
-              title="dropdown-toggle"
-              dropdownToggle
-              class="btn btn-default dropdown-toggle c8y-dropdown"
-            >
+            <button type="button" title="dropdown-toggle" dropdownToggle
+              class="btn btn-default dropdown-toggle c8y-dropdown">
               <span><i [c8yIcon]="item.icon"></i> {{item.icon}}</span> <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" *dropdownMenu>
-              <li *ngFor="let iconClass of availableIcons">
+              <li (click)="item.icon = iconClass" *ngFor="let iconClass of availableIcons">
                 <button type="button">
                   <i [c8yIcon]="iconClass"></i> {{ iconClass }}
                 </button>
               </li>
-             
+
             </ul>
           </div>
         </c8y-form-group>
