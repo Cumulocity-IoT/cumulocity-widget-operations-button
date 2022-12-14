@@ -46,15 +46,15 @@
               dropdownToggle
               class="btn btn-default dropdown-toggle c8y-dropdown"
             >
-              <span>{{chosenOperation || 'Supported Operations'}}</span> <span class="caret"></span>
+              <span>{{customOperation ? 'Custom Operation' : item.operationFragment || 'Supported Operations'}}</span> <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" *dropdownMenu>
-              <li (click)="chosenOperation = operation" *ngFor="let operation of supportedOperations">
+              <li (click)="item.operationFragment = operation; customOperation = false" *ngFor="let operation of supportedOperations">
                 <button type="button">
                   {{ operation }}
                 </button>
               </li>
-              <li (click)="chosenOperation = 'custom'" >
+              <li (click)="customOperation = true" >
                 <button type="button">
                   Custom operation
                 </button>
@@ -63,7 +63,7 @@
           </div>
         </c8y-form-group>
 
-        <c8y-form-group [hasWarning]="!item.operationFragment || item.operationFragment.length === 0">
+        <c8y-form-group *ngIf="customOperation" [hasWarning]="!item.operationFragment || item.operationFragment.length === 0">
           <label translate for="operationFragment">Operation fragment</label>
           <input id="operationFragment" class="form-control" type="text" name="operationFragment" [maxlength]="254"
             autocomplete="off" placeholder="e.g. c8y_Restart" [(ngModel)]="item.operationFragment" required />
@@ -73,11 +73,11 @@
           </c8y-messages>
         </c8y-form-group>
         
-        <c8y-form-group *ngIf="chosenOperation === 'custom'" [hasWarning]="!item.operationValue || item.operationValue.length === 0">
+        <c8y-form-group [hasWarning]="!item.operationValue || item.operationValue.length === 0">
           <label translate for="operationValue">Operation Value</label>
-          <input id="operationValue" class="form-control" type="text" name="operationValue" [maxlength]="254"
+          <textarea id="operationValue" class="form-control" type="text" name="operationValue" [maxlength]="254"
             autocomplete="off" placeholder="e.g. {text: 'Write newValue:'}" [(ngModel)]="item.operationValue"
-            required />
+            required ></textarea>
           <c8y-messages>
             <c8y-message *ngIf="!item.operationValue || item.operationValue.length === 0" translate></c8y-message>
             <c8y-message name="required" text="The operation value is required"></c8y-message>

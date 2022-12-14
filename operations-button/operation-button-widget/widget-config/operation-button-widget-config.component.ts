@@ -8,7 +8,7 @@ import { IOperationButtonWidgetConfig } from "../models/IOperationButtonWidgetCo
 })
 export class OperationButtonWidgetConfigComponent {
   public supportedOperations: string[] = [];
-  public chosenOperation: string = "";
+  public customOperation: boolean = false;
 
   @Input() config: IOperationButtonWidgetConfig = {};
   buttonClasses = [
@@ -43,7 +43,7 @@ export class OperationButtonWidgetConfigComponent {
       buttonClasses: "btn-warning",
       operationValue: "{}",
     });
-    
+
     if (this.config.device && this.config.device["c8y_SupportedOperations"]) {
       this.supportedOperations = this.config.device["c8y_SupportedOperations"];
     }
