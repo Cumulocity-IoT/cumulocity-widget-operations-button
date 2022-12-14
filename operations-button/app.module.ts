@@ -6,7 +6,7 @@ import {
   CoreModule, RouterModule
 } from '@c8y/ngx-components';
 import { BsModalRef } from 'ngx-bootstrap/modal';
-import { WidgetPluginModule } from './widget/widget-plugin.module';
+import { OperationButtonWidgetModule } from './operation-button-widget/operation-button-widget.module';
 
 @NgModule({
   imports: [
@@ -14,7 +14,7 @@ import { WidgetPluginModule } from './widget/widget-plugin.module';
     ngRouterModule.forRoot([], { enableTracing: false, useHash: true }),
     RouterModule.forRoot(),
     CoreModule.forRoot(),
-    WidgetPluginModule
+    OperationButtonWidgetModule
   ],
   providers: [
     BsModalRef
