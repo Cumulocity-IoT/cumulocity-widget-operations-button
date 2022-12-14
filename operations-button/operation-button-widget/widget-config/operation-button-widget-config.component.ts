@@ -7,6 +7,10 @@ import { IOperationButtonWidgetConfig } from '../models/IOperationButtonWidgetCo
   templateUrl: './operation-button-widget-config.component.html',
 })
 export class OperationButtonWidgetConfigComponent {
+
+
+
+
   @Input() config: IOperationButtonWidgetConfig = {};
   buttonClasses = [
     'btn-default',
@@ -24,6 +28,8 @@ export class OperationButtonWidgetConfigComponent {
   addNewButton(): void {
     if (!this.config.buttons) {
       this.config.buttons = [];
+
+
     }
 
     this.config.buttons.push({
@@ -33,6 +39,8 @@ export class OperationButtonWidgetConfigComponent {
       operationFragment: 'c8y_Restart',
       buttonClasses: 'btn-warning',
       operationValue: '{}',
+      showModal: false,
+      modalText: "Confirm device restart"
     });
   }
 

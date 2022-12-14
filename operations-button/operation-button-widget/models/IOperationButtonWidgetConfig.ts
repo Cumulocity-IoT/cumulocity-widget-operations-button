@@ -13,4 +13,6 @@ export interface IOperationButtonConfig {
   buttonClasses?: string;
   description: string;
   operationValue: string;
+  showModal: boolean;
+  modalText?: string;
 }

@@ -84,6 +84,19 @@
           </div>
         </c8y-form-group>
 
+        <c8y-form-group>
+          <label translate for="icon">Requires confirmation</label>
+          <label class="c8y-switch" title="{{ 'Active' | translate }}">
+            <input type="checkbox" [(ngModel)]="item.showModal" />
+            <span></span>
+            <span>
+              {{ 'Show Modal'}}
+            </span>
+          </label>
+          <input *ngIf="item.showModal" id="modalText" class="form-control" type="text" name="description"
+            [maxlength]="254" autocomplete="off" placeholder="e.g. Restart device" [(ngModel)]="item.modalText" />
+        </c8y-form-group>
+
         <div class="d-flex j-c-center a-i-center">
           <button class="btn btn-danger" (click)="removeButton(buttonIndex)">
             <i c8yIcon="delete"></i>Delete Button
