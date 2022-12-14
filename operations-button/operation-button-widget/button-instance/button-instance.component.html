@@ -1,0 +1,4 @@
+<button class="btn" [ngClass]="config?.buttonClasses" [title]="config?.description" (click)="onButtonClick($event)">
+  <i *ngIf="config?.icon" [c8yIcon]="config.icon"></i>
+  {{ config?.label }}
+</button>
