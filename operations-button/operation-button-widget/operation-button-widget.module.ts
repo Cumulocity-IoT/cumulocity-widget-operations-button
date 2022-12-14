@@ -4,9 +4,11 @@ import { CoreModule, HOOK_COMPONENTS } from '@c8y/ngx-components';
 import { ButtonInstanceComponent } from './button-instance/button-instance.component';
 import { OperationButtonWidgetConfigComponent } from './widget-config/operation-button-widget-config.component';
 import { OperationButtonWidgetComponent } from './widget/operation-button-widget.component';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+
 
 @NgModule({
-  imports: [CommonModule, CoreModule],
+  imports: [CommonModule, CoreModule, BsDropdownModule ],
   declarations: [OperationButtonWidgetComponent, OperationButtonWidgetConfigComponent, ButtonInstanceComponent],
   entryComponents: [OperationButtonWidgetComponent, OperationButtonWidgetConfigComponent],
   providers: [
