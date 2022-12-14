@@ -8,7 +8,6 @@ import { IOperationButtonWidgetConfig } from "../models/IOperationButtonWidgetCo
 })
 export class OperationButtonWidgetConfigComponent {
   public supportedOperations: string[] = [];
-  public customOperation: boolean = false;
 
   @Input() config: IOperationButtonWidgetConfig = {};
   buttonClasses = [
@@ -38,14 +37,15 @@ export class OperationButtonWidgetConfigComponent {
     }
 
     this.config.buttons.push({
-      icon: 'refresh',
+      icon: undefined,
       label: 'Restart',
       description: 'Restart device',
       operationFragment: 'c8y_Restart',
-      buttonClasses: 'btn-warning',
+      buttonClasses: undefined,
       operationValue: '{}',
       showModal: false,
-      modalText: "Confirm device restart"
+      modalText: "Confirm device restart",
+      customOperation: false,
     });
 
     if (this.config.device && this.config.device["c8y_SupportedOperations"]) {
