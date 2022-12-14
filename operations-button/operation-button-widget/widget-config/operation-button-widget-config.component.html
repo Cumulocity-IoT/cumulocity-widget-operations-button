@@ -59,36 +59,25 @@
 
         <c8y-form-group>
           <label translate for="icon">Icon</label>
-          <div class="c8y-select-wrapper">
-            <select class="form-control" id="icon" name="icon" [(ngModel)]="item.icon" required>
-              <option [value]="">None</option>
-              <option [value]="iconClass" *ngFor="let iconClass of availableIcons">
-                <p><i [c8yIcon]="iconClass"></i> {{ iconClass }}</p>
-              </option>
-            </select>
+          <div class="dropdown" dropdown>
+            <button
+              type="button"
+              title="dropdown-toggle"
+              dropdownToggle
+              class="btn btn-default dropdown-toggle c8y-dropdown"
+            >
+              <span><i [c8yIcon]="item.icon"></i> {{item.icon}}</span> <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" *dropdownMenu>
+              <li *ngFor="let iconClass of availableIcons">
+                <button type="button">
+                  <i [c8yIcon]="iconClass"></i> {{ iconClass }}
+                </button>
+              </li>
+             
+            </ul>
           </div>
         </c8y-form-group>
-
-        <div class="dropdown" dropdown>
-          <button
-            type="button"
-            title="dropdown-toggle"
-            dropdownToggle
-            class="btn btn-default dropdown-toggle c8y-dropdown"
-          >
-            <span>Dropdown</span> <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu" *dropdownMenu>
-            <li *ngFor="let iconClass of availableIcons">
-              <button type="button">
-                <i [c8yIcon]="iconClass"></i> {{ iconClass }}
-              </button>
-            </li>
-           
-          </ul>
-        </div>
-        
-        
 
         <div class="d-flex j-c-center a-i-center">
           <button class="btn btn-danger" (click)="removeButton(buttonIndex)">
