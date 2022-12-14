@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "This is the Cumulocity module federation plugin. Plugins can be developed like any Cumulocity application, but can be used at runtime by other applications. Therefore, they export an Angular module which can then be imported by any other application. The exports are defined in `package.json`:",
   "scripts": {
-    "start": "c8ycli server -u https://felix.eu-latest.cumulocity.com",
+    "start": "c8ycli server -u https://mb.eu-latest.cumulocity.com",
     "start:shell": "npm start -- --shell cockpit",
     "build": "c8ycli build",
     "deploy": "c8ycli deploy",
