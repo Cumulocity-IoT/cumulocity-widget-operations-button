@@ -33,15 +33,19 @@ export class OperationButtonWidgetConfigComponent {
   addNewButton(): void {
     if (!this.config.buttons) {
       this.config.buttons = [];
+
+
     }
 
     this.config.buttons.push({
-      icon: "refresh",
-      label: "Restart",
-      description: "Restart device",
-      operationFragment: "c8y_Restart",
-      buttonClasses: "btn-warning",
-      operationValue: "{}",
+      icon: 'refresh',
+      label: 'Restart',
+      description: 'Restart device',
+      operationFragment: 'c8y_Restart',
+      buttonClasses: 'btn-warning',
+      operationValue: '{}',
+      showModal: false,
+      modalText: "Confirm device restart"
     });
 
     if (this.config.device && this.config.device["c8y_SupportedOperations"]) {
