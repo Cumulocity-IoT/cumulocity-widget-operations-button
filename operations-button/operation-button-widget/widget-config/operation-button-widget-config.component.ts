@@ -53,6 +53,8 @@ export class OperationButtonWidgetConfigComponent {
     }
   }
 
+  
+
   removeButton(index: number): void {
     this.config.buttons.splice(index, 1);
   }
