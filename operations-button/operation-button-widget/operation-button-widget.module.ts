@@ -5,12 +5,12 @@ import { ButtonInstanceComponent } from './button-instance/button-instance.compo
 import { OperationButtonWidgetConfigComponent } from './widget-config/operation-button-widget-config.component';
 import { OperationButtonWidgetComponent } from './widget/operation-button-widget.component';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { OperationInputComponent } from './widget-config/operationInput/operation-input.component';
+import { OperationValueComponent } from './widget-config/operationValue/operation-value.component';
 
 
 @NgModule({
   imports: [CommonModule, CoreModule, BsDropdownModule],
-  declarations: [OperationButtonWidgetComponent, OperationButtonWidgetConfigComponent, ButtonInstanceComponent, OperationInputComponent],
+  declarations: [OperationButtonWidgetComponent, OperationButtonWidgetConfigComponent, ButtonInstanceComponent, OperationValueComponent],
   entryComponents: [OperationButtonWidgetComponent, OperationButtonWidgetConfigComponent],
   providers: [
     {

@@ -2,7 +2,7 @@
     <label translate for=" operationValue">Operation Value</label>
     <textarea id="operationValue" class="form-control" type="text" name="operationValue" [maxlength]="254"
         autocomplete="off" placeholder="e.g. {text: 'Write newValue:'}" [(ngModel)]="value" required
-        (ngModelChange)="checkValidJson($event)"></textarea>
+        (ngModelChange)="onUpdate($event)"></textarea>
     <c8y-messages>
 
         <c8y-message name="required" text="The operation value is required"></c8y-message>
