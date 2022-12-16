@@ -1,6 +1,6 @@
 {
   "name": "operations-button",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "This is the Cumulocity module federation plugin. Plugins can be developed like any Cumulocity application, but can be used at runtime by other applications. Therefore, they export an Angular module which can then be imported by any other application. The exports are defined in `package.json`:",
   "scripts": {
     "start": "c8ycli server -u https://mb.eu-latest.cumulocity.com",
@@ -49,7 +49,7 @@
       "name": "operations-button",
       "contextPath": "operations-button",
       "key": "operations-button-application-key",
-      "globalTitle": "Custom widget with Module Federation",
+      "globalTitle": "Widget to add buttons to cockpit",
       "tabsHorizontal": true,
       "isPackage": true,
       "noAppSwitcher": true,
