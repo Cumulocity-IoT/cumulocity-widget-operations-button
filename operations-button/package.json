@@ -6,11 +6,12 @@
     "start": "c8ycli server -u https://mb.eu-latest.cumulocity.com",
     "start:shell": "npm start -- --shell cockpit",
     "build": "c8ycli build",
+    "build-ci": "set NODE_OPTIONS=--max_old_space_size=4096 && c8ycli build",
     "deploy": "c8ycli deploy",
     "postinstall": "ngcc"
   },
   "keywords": [],
-  "author": "",
+  "author": "Christian Meyer, Marco Biegel, Felix Schaede",
   "license": "ISC",
   "dependencies": {
     "@angular/animations": "12.2.14",
