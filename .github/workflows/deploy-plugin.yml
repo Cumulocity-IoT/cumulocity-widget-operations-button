@@ -20,7 +20,7 @@ jobs:
         uses: actions/setup-node@v2
         with:
          node-version: 16.x        
-      - run: npm i
+      - run: npm ci
         working-directory: ./operations-button     
       - run: npm run build-ci --if-present
         working-directory: ./operations-button 
