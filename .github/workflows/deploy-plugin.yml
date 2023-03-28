@@ -21,12 +21,12 @@ jobs:
         with:
          node-version: 16.x        
       - run: npm ci
-        working-directory: ./
+        working-directory: ./operations-button
       - run: npm run build-ci --if-present
       - name: Zip Frontend
         run: |
-          cd dist/apps/operations-button
-          zip -r -q ../../operations-button-plugin.zip *
+          cd operations-button/dist/apps/operations-button
+          zip -r -q ../../../operations-button-plugin.zip *
       - name: Read @c8y/client version
         run: |
           export C8Y_VERSION=$(npm list @c8y/client | grep @c8y/client | awk -F@ '{print $2}' | tr -d '[:space:]')
