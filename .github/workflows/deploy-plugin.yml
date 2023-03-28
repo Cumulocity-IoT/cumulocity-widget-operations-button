@@ -33,13 +33,19 @@ jobs:
         run: |
           cd operations-button/dist/apps/operations-button
           zip -r -q ../../../operations-button-plugin.zip *
+      - name: Upload zipfile
+        uses: actions/upload-artifact@v2
+        with:
+          name: operations-button-plugin-${{steps.c8y_version.outputs.c8y_version}}
+          path: operations-button-plugin.zip
       - name: Create Release 
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-          C8Y_VERSION: v${{ steps.c8y_version.outputs.c8y_version }}
+          C8Y_VERSION: ${{ steps.c8y_version.outputs.c8y_version }}
         with:
-          tag_name: v${{ env.VERSION }}
-          release_name: Release v${{ env.VERSION }} for Cumulocity UI v${{ env.C8Y_VERSION }}        
+          tag_name: ${{ env.VERSION }}
+          release_name: Release ${{ env.VERSION }} for Cumulocity UI ${{ env.C8Y_VERSION }}        
           draft: false
           prerelease: false
+          asset_paths: operations-button-plugin.zip
