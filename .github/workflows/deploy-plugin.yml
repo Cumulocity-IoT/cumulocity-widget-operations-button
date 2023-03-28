@@ -20,9 +20,10 @@ jobs:
         uses: actions/setup-node@v2
         with:
          node-version: 16.x        
-      - run: npm ci
-        working-directory: ./operations-button
+      - run: npm i
+        working-directory: ./operations-button     
       - run: npm run build-ci --if-present
+        working-directory: ./operations-button 
       - name: Zip Frontend
         run: |
           cd operations-button/dist/apps/operations-button
