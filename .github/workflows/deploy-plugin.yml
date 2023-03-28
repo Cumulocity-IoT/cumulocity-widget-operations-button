@@ -26,14 +26,14 @@ jobs:
         id: c8y_version
         run: |
           echo "::set-output name=c8y_version::$(npm list @c8y/client | grep @c8y/client | awk -F@ '{print $2}' | tr -d '[:space:]')"
-      - name: Create Release     
+      - name: Create Build     
         run: npm run build-ci --if-present
         working-directory: ./operations-button 
       - name: Zip Frontend
         run: |
           cd operations-button/dist/apps/operations-button
           zip -r -q ../../../operations-button-plugin.zip *
-      
+      - name: Create Release 
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
