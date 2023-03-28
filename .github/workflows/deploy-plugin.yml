@@ -19,24 +19,25 @@ jobs:
       - name: build      
         uses: actions/setup-node@v2
         with:
-         node-version: 16.x        
+         node-version: 14.x        
       - run: npm ci
-        working-directory: ./operations-button     
-      - run: npm run build-ci --if-present
+        working-directory: ./operations-button
+      - name: Read @c8y/client version
+        id: c8y_version
+        run: |
+          echo "::set-output name=c8y_version::$(npm list @c8y/client | grep @c8y/client | awk -F@ '{print $2}' | tr -d '[:space:]')"
+      - name: Create Release     
+        run: npm run build-ci --if-present
         working-directory: ./operations-button 
       - name: Zip Frontend
         run: |
           cd operations-button/dist/apps/operations-button
           zip -r -q ../../../operations-button-plugin.zip *
-      - name: Read @c8y/client version
-        run: |
-          export C8Y_VERSION=$(npm list @c8y/client | grep @c8y/client | awk -F@ '{print $2}' | tr -d '[:space:]')
-          echo "::set-env name=C8Y_VERSION::$C8Y_VERSION"
-      - name: Create Release
+      
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-          C8Y_VERSION: ${{ env.C8Y_VERSION }}
+          C8Y_VERSION: v${{ steps.c8y_version.outputs.c8y_version }}
         with:
           tag_name: v${{ env.VERSION }}
           release_name: Release v${{ env.VERSION }} for Cumulocity UI v${{ env.C8Y_VERSION }}        
