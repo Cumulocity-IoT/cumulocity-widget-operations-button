@@ -33,11 +33,11 @@ jobs:
       - name: Zip Frontend
         run: |
           cd operations-button/dist/apps/operations-button
-          zip -r -q ../../../operations-button-plugin.zip *
+          zip -r -q ../../../../operations-button-plugin.zip *
       - name: Upload zipfile
         uses: actions/upload-artifact@v2
         with:
-          name: operations-button-plugin-${{steps.c8y_version.outputs.c8y_version}}
+          name: operations-button-plugin.zip
           path: operations-button-plugin.zip
       - name: Create Release 
         uses: actions/create-release@v1
