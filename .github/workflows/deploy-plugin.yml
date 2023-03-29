@@ -25,7 +25,8 @@ jobs:
       - name: Read @c8y/client version
         id: c8y_version
         run: |
-          echo "::set-output name=c8y_version::$(npm list @c8y/client | grep @c8y/client | awk -F@ '{print $2}' | tr -d '[:space:]')"
+          echo "c8y_version=$(npm list @c8y/client | grep @c8y/client | awk -F@ '{print $2}' | tr -d '[:space:]')" >> $GITHUB_OUTPUT
+          echo "::debug::Version is ${{ steps.c8y_version.outputs.c8y_version }}"
       - name: Create Build     
         run: npm run build-ci --if-present
         working-directory: ./operations-button 
@@ -44,8 +45,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           C8Y_VERSION: ${{ steps.c8y_version.outputs.c8y_version }}
         with:
-          tag_name: ${{ env.VERSION }}
-          release_name: Release ${{ env.VERSION }} for Cumulocity UI ${{ env.C8Y_VERSION }}        
+          tag_name: ${{ steps.c8y_version.outputs.c8y_version }}
+          release_name: Release ${{ steps.c8y_version.outputs.c8y_version }}       
           draft: false
           prerelease: false
           asset_paths: operations-button-plugin.zip
