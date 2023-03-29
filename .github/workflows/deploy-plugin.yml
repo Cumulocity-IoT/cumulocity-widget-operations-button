@@ -25,7 +25,7 @@ jobs:
       - name: Read @c8y/client version
         id: c8y_version
         run: |
-          echo "c8y_version=$(npm list @c8y/client | grep @c8y/client | awk -F@ '{print $2}' | tr -d '[:space:]')" >> $GITHUB_OUTPUT
+          echo "c8y_version=$(npm info @c8y/client version)" >> $GITHUB_OUTPUT
           echo "::debug::Version is ${{ steps.c8y_version.outputs.c8y_version }}"
       - name: Create Build     
         run: npm run build-ci --if-present
