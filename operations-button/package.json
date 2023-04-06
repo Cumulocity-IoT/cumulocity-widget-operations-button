@@ -12,7 +12,7 @@
   },
   "keywords": [],
   "author": "Tristan Bastian, Marco Biegel, Christian Meyer, Felix Schaede",
-  "license": "ISC",
+  "license": "Apache 2.0",
   "dependencies": {
     "@angular/animations": "14.0.6",
     "@angular/cdk": "14.1.2",
@@ -47,14 +47,18 @@
   "c8y": {
     "application": {
       "name": "operations-button-widget",
-      "contextPath": "operations-button-widget",
-      "key": "operations-button-widget-key",
+      "contextPath": "sag-ps-pkg-operations-button-widget",
+      "key": "sag-ps-pkg-operations-button-widget-key",
       "globalTitle": "Widget to add buttons to cockpit",
       "tabsHorizontal": true,
       "isPackage": true,
       "noAppSwitcher": true,
       "package": "plugin",
       "requiredPlatformVersion": ">=1016.0.0",
+      "keywords": [ 
+    "Cumulocity",
+    "Plugin",
+    "Widget"],
       "exports": [
         {
           "name": "Operation Button Widget Plugin",
