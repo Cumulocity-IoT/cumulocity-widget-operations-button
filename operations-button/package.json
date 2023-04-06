@@ -1,6 +1,6 @@
 {
   "name": "operations-button-widget",
-  "version": "0.0.1",
+  "version": "10.16.1",
   "description": "Add buttons to cockpit to trigger operations",
   "scripts": {
     "start": "c8ycli server -u https://felix.eu-latest.cumulocity.com",
