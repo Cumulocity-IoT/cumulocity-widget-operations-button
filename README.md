@@ -6,15 +6,15 @@ For each added button you can configure different parameters of the operation an
 
 ## Parameters to configure
 
-| Field              |                              Description                               |
-| :----------------- | :--------------------------------------------------------------------: |
-| Title              |                          Title of the widget.                          |
-| Label              |                        The label of the button.                        |
+| Field              | Description                                                            |
+| ------------------ | ---------------------------------------------------------------------- |
+| Title              | Title of the widget.                                                   |
+| Label              | The label of the button.                                               |
 | Description        | Description of the operation, which should be triggered by the button. |
-| Operation Fragment |             The operation fragment, which should be sent.              |
-| Operation Value    |                       The operation JSON object.                       |
-| Button             |                        The button type (color).                        |
-| Icon               |                            The button icon.                            |
+| Operation Fragment | The operation fragment, which should be sent.                          |
+| Operation Value    | The operation JSON object.                                             |
+| Button             | The button type (color).                                               |
+| Icon               | The button icon.                                                       |
 
 When all buttons are configured, you can hit "Save" and find the buttons within the widget.
 
