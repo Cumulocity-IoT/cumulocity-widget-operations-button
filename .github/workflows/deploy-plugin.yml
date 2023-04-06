@@ -1,7 +1,7 @@
 name: Build Operations Button Widget
 
 # Controls when the workflow will run
-on:    
+on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -16,10 +16,10 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
-      - name: build      
+      - name: build
         uses: actions/setup-node@v2
         with:
-         node-version: 14.x        
+          node-version: 14.x
       - run: npm ci
         working-directory: ./operations-button
       - name: Read @c8y/client version
@@ -27,13 +27,13 @@ jobs:
         run: |
           echo "c8y_version=$(npm info @c8y/client version)" >> $GITHUB_OUTPUT
           echo "::debug::Version is ${{ steps.c8y_version.outputs.c8y_version }}"
-      - name: Create Build     
+      - name: Create Build
         run: npm run build-ci --if-present
-        working-directory: ./operations-button 
+        working-directory: ./operations-button
       - name: Zip Frontend
         run: |
           cd operations-button/dist/apps/operations-button
-          zip -r -q ../../../../operations-button-plugin.zip *      
+          zip -r -q ../../../../operations-button-plugin.zip *
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -42,7 +42,7 @@ jobs:
           C8Y_VERSION: ${{ steps.c8y_version.outputs.c8y_version }}
         with:
           tag_name: ${{ steps.c8y_version.outputs.c8y_version }}
-          release_name: Release ${{ steps.c8y_version.outputs.c8y_version }}       
+          release_name: Release ${{ steps.c8y_version.outputs.c8y_version }}
           draft: false
           prerelease: false
       - name: Upload Release Asset Frontend

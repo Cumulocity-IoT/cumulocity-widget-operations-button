@@ -7,11 +7,18 @@ import { OperationButtonWidgetComponent } from './widget/operation-button-widget
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { OperationValueComponent } from './widget-config/operationValue/operation-value.component';
 
-
 @NgModule({
   imports: [CommonModule, CoreModule, BsDropdownModule],
-  declarations: [OperationButtonWidgetComponent, OperationButtonWidgetConfigComponent, ButtonInstanceComponent, OperationValueComponent],
-  entryComponents: [OperationButtonWidgetComponent, OperationButtonWidgetConfigComponent],
+  declarations: [
+    OperationButtonWidgetComponent,
+    OperationButtonWidgetConfigComponent,
+    ButtonInstanceComponent,
+    OperationValueComponent,
+  ],
+  entryComponents: [
+    OperationButtonWidgetComponent,
+    OperationButtonWidgetConfigComponent,
+  ],
   providers: [
     {
       provide: HOOK_COMPONENTS,
@@ -38,4 +45,4 @@ import { OperationValueComponent } from './widget-config/operationValue/operatio
     },
   ],
 })
-export class OperationButtonWidgetModule { }
+export class OperationButtonWidgetModule {}
