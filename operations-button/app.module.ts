@@ -3,7 +3,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule as ngRouterModule } from '@angular/router';
 import {
   BootstrapComponent,
-  CoreModule, RouterModule
+  CoreModule,
+  RouterModule,
 } from '@c8y/ngx-components';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { OperationButtonWidgetModule } from './operation-button-widget/operation-button-widget.module';
@@ -14,11 +15,9 @@ import { OperationButtonWidgetModule } from './operation-button-widget/operation
     ngRouterModule.forRoot([], { enableTracing: false, useHash: true }),
     RouterModule.forRoot(),
     CoreModule.forRoot(),
-    OperationButtonWidgetModule
+    OperationButtonWidgetModule,
   ],
-  providers: [
-    BsModalRef
-  ],
-  bootstrap: [BootstrapComponent]
+  providers: [BsModalRef],
+  bootstrap: [BootstrapComponent],
 })
 export class AppModule {}

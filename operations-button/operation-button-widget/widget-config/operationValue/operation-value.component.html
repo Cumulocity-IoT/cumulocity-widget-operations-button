@@ -1,13 +1,24 @@
 <c8y-form-group [hasWarning]="!value || value.length === 0 || !isValidJson">
-    <label translate for=" operationValue">Operation Value</label>
-    <textarea id="operationValue" class="form-control" type="text" name="operationValue" [maxlength]="254"
-        autocomplete="off" placeholder="e.g. {text: 'Write newValue:'}" [(ngModel)]="value" required
-        (ngModelChange)="onUpdate($event)"></textarea>
-    <c8y-messages>
-
-        <c8y-message name="required" text="The operation value is required"></c8y-message>
-    </c8y-messages>
-    <small *ngIf="value && value.length > 0 && !isValidJson" class="form-control-feedback-message">
-        The operation value is not a valid json
-    </small>
+  <label translate for=" operationValue">Operation Value</label>
+  <textarea
+    id="operationValue"
+    class="form-control"
+    type="text"
+    name="operationValue"
+    [maxlength]="254"
+    autocomplete="off"
+    placeholder="e.g. {text: 'Write newValue:'}"
+    [(ngModel)]="value"
+    required
+    (ngModelChange)="onUpdate($event)"></textarea>
+  <c8y-messages>
+    <c8y-message
+      name="required"
+      text="The operation value is required"></c8y-message>
+  </c8y-messages>
+  <small
+    *ngIf="value && value.length > 0 && !isValidJson"
+    class="form-control-feedback-message">
+    The operation value is not a valid json
+  </small>
 </c8y-form-group>
