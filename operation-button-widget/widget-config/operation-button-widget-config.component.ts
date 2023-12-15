@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { ICONS } from '@c8y/ngx-components';
 import { IOperationButtonWidgetConfig } from '../models/IOperationButtonWidgetConfig';
+import { ICONS } from './icons-constant';
 
 @Component({
   selector: 'app-operation-button-widget-config',
@@ -22,10 +22,6 @@ export class OperationButtonWidgetConfigComponent {
     'btn-link',
   ];
   availableIcons: string[] = [
-    'play',
-    'stop',
-    'rotate-left',
-    'rotate-right',
     ...ICONS,
   ];
 
@@ -39,7 +35,7 @@ export class OperationButtonWidgetConfigComponent {
       label: 'Restart',
       description: 'Restart device',
       operationFragment: 'c8y_Restart',
-      buttonClasses: undefined,
+      buttonClasses: "btn-default",
       operationValue: '{}',
       showModal: false,
       modalText: 'Confirm device restart',

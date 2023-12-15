@@ -4,6 +4,10 @@ The Operations Widget enables Cumulocity IoT users to send predefined or custom 
 Once you have selected the widget within the widget gallery you will find the widget configuration menu. There you can define multiple buttons, which make defined operations triggerable from inside the widget.
 For each added button you can configure different parameters of the operation and the style of the buttons.
 
+## Prequisites
+    Cumulocity UI > 10.18
+
+
 ## Parameters to configure
 
 | Field              | Description                                                            |
