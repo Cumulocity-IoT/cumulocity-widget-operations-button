@@ -19,7 +19,7 @@ jobs:
       - name: build
         uses: actions/setup-node@v2
         with:
-          node-version: 14.x
+          node-version: 18.x
       - run: npm ci
       - name: Read @c8y/client version
         id: c8y_version
@@ -30,7 +30,7 @@ jobs:
         run: npm run build-ci --if-present
       - name: Zip Frontend
         run: |
-          cd operations-button/dist/apps/operations-button
+          cd dist/apps/sag-ps-pkg-operations-button-widget
           zip -r -q ../../../../operations-button-plugin.zip *
       - name: Create Release
         id: create_release
