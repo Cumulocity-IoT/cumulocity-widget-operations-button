@@ -31,7 +31,7 @@ jobs:
       - name: Zip Frontend
         run: |
           cd dist/apps/sag-ps-pkg-operations-button-widget
-          zip -r -q ../../../../operations-button-plugin.zip *
+          zip -r -q ../../../operations-button-plugin.zip *
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
