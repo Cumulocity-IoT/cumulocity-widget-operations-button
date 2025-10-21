@@ -19,7 +19,7 @@ jobs:
       - name: build
         uses: actions/setup-node@v2
         with:
-          node-version: 18.x
+          node-version: 20.x
       - run: npm ci
       - name: Read @c8y/client version
         id: c8y_version
@@ -32,6 +32,8 @@ jobs:
       #   run: |
       #     cd dist/operation-button-widget
       #     zip -r -q ../../../operation-button-plugin.zip *
+      - name: List Assets
+        run: ls -la dist
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
