@@ -4,8 +4,12 @@ name: Build operation Button Widget
 on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+  # Trigger on tag push
+  push:
+    tags:
+      - 'v*'
 
-  # A workflow run is made up of one or more jobs that can run sequentially or in parallel
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
   build:
@@ -28,12 +32,13 @@ jobs:
           echo "::debug::Version is ${{ steps.c8y_version.outputs.c8y_version }}"
       - name: Create Build
         run: npm run build-ci --if-present
-      # - name: Zip Frontend
-      #   run: |
-      #     cd dist/operation-button-widget
-      #     zip -r -q ../../../operation-button-plugin.zip *
       - name: List Assets
         run: ls -la .
+      - name: Zip Frontend
+        run: |
+          cd dist/operation-button-widget
+          zip -r -q ../../operation-button-plugin.zip *
+
       - name: Create Release
         if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
         id: create_release
@@ -46,10 +51,11 @@ jobs:
           draft: true
           prerelease: false
       - name: Upload Release Asset Frontend
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
         id: upload-release-asset-frontend
         uses: actions/upload-release-asset@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./dist/operation-button-plugin.zip
