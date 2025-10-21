@@ -1,31 +1,36 @@
-# Cumulocity IoT Operations Widget
+# Cumulocity sample plugin
 
-The Operations Widget enables Cumulocity IoT users to send predefined or custom operations from the Cockpit application.
-Once you have selected the widget within the widget gallery you will find the widget configuration menu. There you can define multiple buttons, which make defined operations triggerable from inside the widget.
-For each added button you can configure different parameters of the operation and the style of the buttons.
+This is the Cumulocity module federation plugin. Plugins can be developed like any Cumulocity application, but can be used at runtime by other applications. Therefore, they export an Angular module which can then be imported by any other application. The exports are defined in `cumulocity.config.ts`:
 
-![Operation Config](./doc/widget.png)
+```json
+"exports": [
+  {
+     "name": "Example sample plugin widget",
+     "module": "OperationButtonWidgetModule",
+     "path": "./src/app/index.ts",
+     "description": "Adds a custom widget to the shell application"
+  }
+]
+```
+Once the application has been built, the exports are also defined in the `cumulocity.json` file.
 
-## Prequisites
+**How to start**
+Run the commands below to scaffold a `sample-plugin`.
 
-    Cumulocity UI > 10.18
+```bash
+npx @angular/cli@v19-lts new --style=less # Install the correct version of Angular, which should be the same as your application.
+cd <new-application-name>
+ng add @c8y/websdk --application @c8y/sample-plugin
+```
 
-## Parameters to configure
+As the app.module is a typical Cumulocity application, any new plugin can be tested via the CLI:
 
-| Field              | Description                                                            |
-| ------------------ | ---------------------------------------------------------------------- |
-| Title              | Title of the widget.                                                   |
-| Label              | The label of the button.                                               |
-| Description        | Description of the operation, which should be triggered by the button. |
-| Operation Fragment | The operation fragment, which should be sent.                          |
-| Operation Value    | The operation JSON object.                                             |
-| Button             | The button type (color).                                               |
-| Icon               | The button icon.                                                       |
+```bash
+ng serve --shell cockpit
+```
 
-![Operation Widget Config](./doc/config.png)
+In the Module Federation terminology, `sample` plugin is called `remote` and the `cockpit` is called `shell`. Modules provided by this `sample` will be loaded by the `cockpit` application at the runtime. This plugin provides a basic custom widget that can be accessed through the `Add widget` menu and a new view in a left-hand navigator, where you can find links to Codex hooks entries.
 
-When all buttons are configured, you can hit "Save" and find the buttons within the widget.
+> Note that the `--shell` flag creates a proxy to the cockpit application and provides `OperationButtonWidgetModule` as an `remote` via URL options.
 
----
-
-These tools are provided as-is and without warranty or support. They do not constitute part of the Software AG product suite. Users are free to use, fork and modify them, subject to the license agreement. While Software AG welcomes contributions, we cannot guarantee to include every contribution in the master project.
+Also deploying needs no special handling and can be simply done via `npm run deploy`. As soon as the application has exports it will be uploaded as a plugin.
