@@ -34,11 +34,12 @@ jobs:
         run: npm run build-ci --if-present
       - name: List Assets
         run: ls -la .
-             ls -la dist
+      - name: List Build Assets
+        run: ls -la dist
       # - name: Zip Frontend
       #   run: |
       #     cd dist/operation-button-widget
-      #     zip -r -q ../../operation-button-plugin.zip *
+      #     zip -r -q ../../operation-button-widget.zip *
       - name: Create Release
         if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v'))
         id: create_release
@@ -58,6 +59,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./dist/operation-button-plugin.zip
-          asset_name: operation-button-plugin.zip
+          asset_path: ./dist/operation-button-widget.zip
+          asset_name: operation-button-widget.zip
           asset_content_type: application/zip
