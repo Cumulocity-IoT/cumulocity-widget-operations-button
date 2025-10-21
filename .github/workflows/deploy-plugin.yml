@@ -33,7 +33,7 @@ jobs:
       #     cd dist/operation-button-widget
       #     zip -r -q ../../../operation-button-plugin.zip *
       - name: List Assets
-        run: ls -la dist
+        run: ls -la .
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
