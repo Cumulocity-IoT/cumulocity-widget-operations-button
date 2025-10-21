@@ -30,7 +30,7 @@ jobs:
         run: npm run build-ci --if-present
       - name: Zip Frontend
         run: |
-          cd dist/apps/sag-ps-pkg-operations-button-widget
+          cd dist/operations-button-widget
           zip -r -q ../../../operations-button-plugin.zip *
       - name: Create Release
         id: create_release
