@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "operations-button-widget": {
+    "operation-button-widget": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@c8y/devkit:build",
           "options": {
-            "outputPath": "dist/operations-button-widget",
+            "outputPath": "dist/operation-button-widget",
             "polyfills": [
               "zone.js"
             ],
@@ -73,10 +73,10 @@
           "builder": "@c8y/devkit:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "operations-button-widget:build:production"
+              "buildTarget": "operation-button-widget:build:production"
             },
             "development": {
-              "buildTarget": "operations-button-widget:build:development"
+              "buildTarget": "operation-button-widget:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -110,10 +110,10 @@
           "builder": "@c8y/devkit:deploy",
           "configurations": {
             "production": {
-              "buildTarget": "operations-button-widget:build:production"
+              "buildTarget": "operation-button-widget:build:production"
             },
             "development": {
-              "buildTarget": "operations-button-widget:build:development"
+              "buildTarget": "operation-button-widget:build:development"
             }
           },
           "defaultConfiguration": "production"

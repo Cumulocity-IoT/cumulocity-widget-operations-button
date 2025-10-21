@@ -1,5 +1,5 @@
 {
-  "name": "operations-button-widget",
+  "name": "operation-button-widget",
   "author": "christof.strack@cumulocity.com",
   "license":"Apache-2.0",
   "description": "Widget to create an operation",

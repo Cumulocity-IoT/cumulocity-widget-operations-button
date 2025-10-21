@@ -1,4 +1,4 @@
-name: Build Operations Button Widget
+name: Build operation Button Widget
 
 # Controls when the workflow will run
 on:
@@ -30,8 +30,8 @@ jobs:
         run: npm run build-ci --if-present
       - name: Zip Frontend
         run: |
-          cd dist/operations-button-widget
-          zip -r -q ../../../operations-button-plugin.zip *
+          cd dist/operation-button-widget
+          zip -r -q ../../../operation-button-plugin.zip *
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -50,6 +50,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./operations-button-plugin.zip
-          asset_name: operations-button-plugin.zip
+          asset_path: ./operation-button-plugin.zip
+          asset_name: operation-button-plugin.zip
           asset_content_type: application/zip

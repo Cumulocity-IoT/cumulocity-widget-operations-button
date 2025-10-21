@@ -6,7 +6,6 @@ import { CommonModule } from '@angular/common';
 import { OperationButtonWidgetComponent } from '../widget/operation-button-widget.component';
 import { WidgetConfigService } from '@c8y/ngx-components/context-dashboard';
 import { AlertService, CoreModule, DynamicComponent, IconDirective } from '@c8y/ngx-components';
-import { ButtonInstanceComponent } from '../button-instance/button-instance.component';
 import { OperationValueComponent } from './operationValue/operation-value.component';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
