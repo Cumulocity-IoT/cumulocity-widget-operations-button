@@ -3,7 +3,7 @@
   "author": "christof.strack@cumulocity.com",
   "license":"Apache-2.0",
   "description": "Widget to create an operation",
-  "version": "0.0.0",
+  "version": "0.0.2",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
