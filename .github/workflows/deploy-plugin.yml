@@ -34,10 +34,11 @@ jobs:
         run: npm run build-ci --if-present
       - name: List Assets
         run: ls -la .
-      - name: Zip Frontend
-        run: |
-          cd dist/operation-button-widget
-          zip -r -q ../../operation-button-plugin.zip *
+             ls -la dist
+      # - name: Zip Frontend
+      #   run: |
+      #     cd dist/operation-button-widget
+      #     zip -r -q ../../operation-button-plugin.zip *
       - name: Create Release
         if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v'))
         id: create_release
