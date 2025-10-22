@@ -1,11 +1,11 @@
 <c8y-form-group [hasWarning]="!value || value.length === 0 || !isValidJson">
   <label translate for=" operationValue">Operation value</label>
   <textarea
+    c8y-textarea-autoresize
     id="operationValue"
     class="form-control"
     type="text"
     name="operationValue"
-    [maxlength]="254"
     autocomplete="off"
     placeholder="e.g. {text: 'Write newValue:'}"
     [(ngModel)]="value"

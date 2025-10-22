@@ -150,7 +150,7 @@
                 <c8y-message name="required" text="'The operation fragment is required'"></c8y-message>
               </c8y-messages>
             </c8y-form-group>
-            <app-operation-value [(value)]="item.operationValue"></app-operation-value>
+            
 
 
             <c8y-form-group>
@@ -167,6 +167,9 @@
             </c8y-form-group>
 
           </fieldset>
+        </div>
+        <div class="col-sm-12">
+          <app-operation-value [(value)]="item.operationValue"></app-operation-value>
         </div>
         <div class="col-sm-12">
           <button class="btn btn-danger" (click)="removeButton(buttonIndex)">
