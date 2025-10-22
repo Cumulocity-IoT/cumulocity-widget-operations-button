@@ -49,7 +49,6 @@
                     {{
                     item.buttonType ? item.buttonType : 'Choose color'
                     }}</span>
-                  <!-- <span class="caret"></span> -->
                 </button>
 
                 <ul class="dropdown-menu" *dropdownMenu>
@@ -150,8 +149,6 @@
                 <c8y-message name="required" text="'The operation fragment is required'"></c8y-message>
               </c8y-messages>
             </c8y-form-group>
-            
-
 
             <c8y-form-group>
               <label translate for="icon">Requires confirmation</label>
@@ -168,9 +165,44 @@
 
           </fieldset>
         </div>
-        <div class="col-sm-12">
-          <app-operation-value [(value)]="item.operationValue"></app-operation-value>
+        
+        <!-- Operation Value Section -->
+        <div class="col-sm-12" *ngIf="item.customOperation">
+          <app-operation-value 
+            [(value)]="item.operationValue"
+            (valueChangeDebounced)="onOperationValueChange(buttonIndex)">
+          </app-operation-value>
         </div>
+
+        <!-- Operation Variables Section -->
+        <div class="col-sm-12" *ngIf="item.operationVariables && item.operationVariables.length > 0">
+          <fieldset class="c8y-fieldset">
+            <legend>Operation Variables</legend>
+            <div class="alert alert-info m-b-16">
+              <i c8yIcon="info-circle"></i>
+              Define default values for variables found in the operation value
+            </div>
+            <div *ngFor="let variable of item.operationVariables; let varIndex = index" class="m-b-16">
+              <c8y-form-group>
+                <label translate>
+                  <strong>{{ variable.label }}</strong> - Default value
+                </label>
+                <input 
+                  class="form-control" 
+                  type="text" 
+                  [name]="'variable-' + buttonIndex + '-' + varIndex"
+                  [maxlength]="254" 
+                  autocomplete="off"
+                  placeholder="Enter default value for {{ variable.label }}"
+                  [(ngModel)]="variable.default" />
+                <small class="help-block">
+                  This variable will be replaced in the operation value
+                </small>
+              </c8y-form-group>
+            </div>
+          </fieldset>
+        </div>
+
         <div class="col-sm-12">
           <button class="btn btn-danger" (click)="removeButton(buttonIndex)">
             <i c8yIcon="delete"></i>Delete button
@@ -178,6 +210,7 @@
         </div>
       </div>
     </div>
+    
     <div class="col-sm-12">
       <div *ngIf="config?.buttons?.length > 0" class="col-sm-12">
         <button class="m-t-16 m-b-16 btn btn-primary" (click)="addNewButton()">
@@ -185,17 +218,6 @@
         </button>
       </div>
     </div>
-
-    <!-- <div *ngIf="config?.buttons?.length > 0" class="col-sm-12">
-      <h3 class="text-center">Preview</h3>
-    </div>
-    <div *ngIf="config?.buttons?.length > 0" class="col-sm-12">
-      <div class="bg-light-gray d-flex flex-wrap j-c-center a-i-center p-24 fit-h fit-v" style="width: 100%">
-        <ng-container *ngFor="let item of config.buttons; let buttonIndex = index">
-          <app-button-instance class="p-4" [config]="item"></app-button-instance>
-        </ng-container>
-      </div>
-    </div> -->
   </div>
 
   <ng-template #sampleWidgetPreview>
