@@ -1,7 +1,33 @@
 <div class="d-flex flex-wrap j-c-center a-i-center fit-h fit-v">
-  <app-button-instance
-    class="p-4"
-    [config]="item"
-    *ngFor="let item of config?.buttons"
-    (clickedOperation)="onButtonClick(item)"></app-button-instance>
+  <ng-container *ngFor="let item of config?.buttons; let i = index">
+    <div class="p-4" style="width: 100%; max-width: 400px;">
+      <!-- Button Instance -->
+      <div class="text-center_ m-b-8">
+        <app-button-instance [config]="item" (clickedOperation)="onButtonClick(item, i)">
+        </app-button-instance>
+      </div>
+
+      <!-- Variables Section (Collapsible) -->
+      <div *ngIf="hasVariables(item)">
+        <button type="button" class="btn text-left" [attr.aria-expanded]="isExpanded(i)"
+          (click)="toggleVariables(i)"
+          style="width: 100%; white-space: nowrap; display: flex; align-items: center; padding: 4px 8px;">
+          <i [c8yIcon]="isExpanded(i) ? 'chevron-down' : 'chevron-right'" style="margin-right: 8px;"></i>
+          <span>Parameters ({{ item.operationVariables?.length }})</span>
+        </button>
+
+        <div class="collapse bg-level-1" [collapse]="!isExpanded(i)" [isAnimated]="true">
+          <div class="p-8">
+            <div *ngFor="let variable of item.operationVariables" class="m-b-8">
+              <label class="text-truncate">
+                <small><strong>{{ variable.label }}</strong></small>
+              </label>
+              <input class="form-control input-sm" type="text" [(ngModel)]="getVariableValues(i)[variable.varName]"
+                [placeholder]="variable.default || 'Enter value'" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
 </div>
