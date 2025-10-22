@@ -5,7 +5,7 @@ import { ControlContainer, FormsModule, NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { OperationButtonWidgetComponent } from '../widget/operation-button-widget.component';
 import { WidgetConfigService } from '@c8y/ngx-components/context-dashboard';
-import { AlertService, CoreModule, DynamicComponent, HumanizePipe, IconDirective } from '@c8y/ngx-components';
+import { AlertService, CoreModule, DynamicComponent, IconDirective } from '@c8y/ngx-components';
 import { OperationValueComponent } from './operationValue/operation-value.component';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
@@ -19,12 +19,11 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 export class OperationButtonWidgetConfigComponent implements DynamicComponent, OnInit {
 
   private readonly alert = inject(AlertService);
-  private readonly humanizePipe = inject(HumanizePipe);
-
   private readonly widgetConfigService = inject(WidgetConfigService);
   public supportedOperations: string[] = [];
 
   @Input() config: IOperationButtonWidgetConfig = {};
+  
   buttonTypes = [
     'btn-default',
     'btn-primary',
@@ -40,9 +39,12 @@ export class OperationButtonWidgetConfigComponent implements DynamicComponent, O
     'btn-sm',
     'btn-xs',
   ];
+  
   availableIcons: string[] = [
     ...ICONS,
   ];
+
+  variableTypes: Array<'text' | 'number'> = ['text', 'number'];
 
   @ViewChild('sampleWidgetPreview')
   set previewMapSet(template: TemplateRef<any>) {
@@ -97,7 +99,7 @@ export class OperationButtonWidgetConfigComponent implements DynamicComponent, O
     try {
       // Check if it's valid JSON first
       JSON.parse(operationValue);
-
+      
       // Regular expression to match ${variableName} pattern
       const variableRegex = /\$\{([^}]+)\}/g;
       const variables: string[] = [];
@@ -105,12 +107,8 @@ export class OperationButtonWidgetConfigComponent implements DynamicComponent, O
 
       // Extract all matches from the original string
       while ((match = variableRegex.exec(operationValue)) !== null) {
-        // Clean up the variable name - trim whitespace and remove any $ prefix
-        let variableName = match[1].trim();
-        // Remove leading $ if present
-        if (variableName.startsWith('$')) {
-          variableName = variableName.slice(1);
-        }
+        // Clean up the variable name - trim whitespace
+        const variableName = match[1].trim();
         variables.push(variableName);
       }
 
@@ -125,7 +123,7 @@ export class OperationButtonWidgetConfigComponent implements DynamicComponent, O
 
       return uniqueVariables;
     } catch (error) {
-      // Invalid JSON, cannot parse for referenced variables
+      // Invalid JSON, don't parse for variables
       console.log('Invalid JSON, cannot parse for referenced variables');
       return [];
     }
@@ -144,32 +142,32 @@ export class OperationButtonWidgetConfigComponent implements DynamicComponent, O
     if (!operationValue) return;
 
     console.log(`Operation value changed for button ${buttonIndex + 1}:`, operationValue);
-
+    
     const foundVariables = this.parseReferencedVariables(operationValue);
-
+    
     // Initialize operationVariables if not exists
     if (!button.operationVariables) {
       button.operationVariables = [];
     }
 
-    // Get existing variable labels to preserve their defaults
+    // Get existing variable labels to preserve their defaults and types
     const existingVariablesMap = new Map<string, IOperationVariable>();
     button.operationVariables.forEach(v => {
-      existingVariablesMap.set(v.label, v);
+      existingVariablesMap.set(v.varName, v);
     });
 
     // Update operationVariables array
     button.operationVariables = foundVariables.map(varName => {
-      // If variable already exists, keep its default value
+      // If variable already exists, keep its settings
       if (existingVariablesMap.has(varName)) {
         return existingVariablesMap.get(varName)!;
       }
-      const label = this.humanizePipe.transform(varName);
-      // Otherwise create new variable with empty default
+      // Otherwise create new variable with empty default and text type
       return {
-        label,
-        varName,
-        default: ''
+        varName: varName,
+        label: varName,
+        default: '',
+        type: 'text' as const
       };
     });
   }

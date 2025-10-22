@@ -24,4 +24,5 @@ export interface IOperationVariable {
   label: string;
   varName: string;
   default?: string;
+  type:  "number" | "text";
 }

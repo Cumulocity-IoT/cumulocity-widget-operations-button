@@ -19,7 +19,7 @@ export class OperationButtonWidgetComponent implements OnInit, OnChanges {
   @Input() config: IOperationButtonWidgetConfig = {};
 
   // Track variable values and expanded state separately
-  variableValues: Map<number, { [key: string]: string }> = new Map();
+  variableValues: Map<number, { [key: string]: string | number }> = new Map();
   expandedStates: Map<number, boolean> = new Map();
 
   constructor(
@@ -72,10 +72,6 @@ export class OperationButtonWidgetComponent implements OnInit, OnChanges {
    * Initialize variable values with defaults
    * If operationVariables is not set in config, parse operationValue to find them
    */
-  /**
-   * Initialize variable values with defaults
-   * If operationVariables is not set in config, parse operationValue to find them
-   */
   private initializeVariables(): void {
     if (this.config.buttons) {
       this.config.buttons.forEach((button, index) => {
@@ -87,7 +83,8 @@ export class OperationButtonWidgetComponent implements OnInit, OnChanges {
             button.operationVariables = foundVariables.map(varName => ({
               varName: varName,
               label: varName,
-              default: ''
+              default: '',
+              type: 'text' as const
             }));
           }
         }
@@ -131,23 +128,39 @@ export class OperationButtonWidgetComponent implements OnInit, OnChanges {
   }
 
   /**
-   * Get variable values for a button
-   */
-  getVariableValues(index: number): { [key: string]: string } {
+  * Get variable values for a button
+  */
+  getVariableValues(index: number): { [key: string]: string | number } {
     return this.variableValues.get(index) || {};
   }
 
   /**
    * Replace variables in operation value with actual values
    */
-  private replaceVariables(operationValue: string, variableValues: { [key: string]: string }): string {
+  private replaceVariables(operationValue: string, variableValues: { [key: string]: string | number }, button: IOperationButtonConfig): string {
     let result = operationValue;
 
     // Replace each ${variableName} with its value
     Object.keys(variableValues).forEach(varName => {
-      const regex = new RegExp(`\\$\\{${varName}\\}`, 'g');
       const value = variableValues[varName];
-      result = result.replace(regex, value);
+
+      // Find the variable definition to check its type
+      const variableDef = button.operationVariables?.find(v => v.varName === varName);
+
+      // Create regex to match ${variableName} with possible surrounding quotes
+      const regexWithQuotes = new RegExp(`"\\$\\{${varName}\\}"`, 'g');
+      const regexWithoutQuotes = new RegExp(`\\$\\{${varName}\\}`, 'g');
+
+      // Convert value to appropriate type
+      if (variableDef?.type === 'number') {
+        // For numbers, replace including the quotes to get raw number in JSON
+        result = result.replace(regexWithQuotes, String(value));
+        // Also handle case without quotes
+        result = result.replace(regexWithoutQuotes, String(value));
+      } else {
+        // For text, replace the placeholder but keep it as a string
+        result = result.replace(regexWithoutQuotes, String(value));
+      }
     });
 
     console.log('Original operation value:', operationValue);
@@ -168,7 +181,26 @@ export class OperationButtonWidgetComponent implements OnInit, OnChanges {
     const values = this.variableValues.get(buttonIndex) || {};
     const missingVariables = button.operationVariables.filter(variable => {
       const value = values[variable.varName];
-      return !value || value.trim() === '';
+
+      // Check if value is null or undefined
+      if (value === null || value === undefined) {
+        return true;
+      }
+
+      // For string values, check if empty or only whitespace
+      if (typeof value === 'string') {
+        return value.trim() === '';
+      }
+
+      // For number values, check if it's a valid number
+      if (variable.type === 'number') {
+        // Convert to string first, then check if it's empty or NaN
+        const stringValue = String(value).trim();
+        return stringValue === '' || isNaN(Number(value));
+      }
+
+      // For other types, just check if it's falsy
+      return !value;
     });
 
     if (missingVariables.length > 0) {
@@ -197,7 +229,7 @@ export class OperationButtonWidgetComponent implements OnInit, OnChanges {
         const varValues = this.variableValues.get(buttonIndex);
 
         if (varValues && Object.keys(varValues).length > 0) {
-          operationValue = this.replaceVariables(operationValue, varValues);
+          operationValue = this.replaceVariables(operationValue, varValues, button);
         }
 
         // Parse the operation value
