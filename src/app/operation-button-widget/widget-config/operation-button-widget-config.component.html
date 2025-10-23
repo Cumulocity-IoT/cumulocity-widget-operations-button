@@ -1,18 +1,18 @@
 <div class="d-flex">
   <div class="col-sm-12">
     <div *ngIf="!config.device" class="col-sm-12">
-      <div class="text-center  text-16 m-b-16">Define Operation buttons</div>
-      <div class="text-center">Before we can start you have to pick a device</div>
+      <c8y-ui-empty-state [icon]="'c8y-smart-rules'" [title]="'No device selected yet.'"
+        [subtitle]="'Select a device first.'">
+      </c8y-ui-empty-state>
     </div>
     <div *ngIf="config.device" class="col-sm-12">
-      <div class="text-center  text-16 m-b-16">Define Operation buttons</div>
       <div *ngIf="!config?.buttons?.length">
-        <div class="text-center">No Buttons configured yet.</div>
-        <div class="j-c-center">
-          <button class="m-16 btn btn-primary" (click)="addNewButton()">
+        <c8y-ui-empty-state [icon]="'c8y-smart-rules'" [title]="'No Buttons configured yet.'"
+          [subtitle]="'Click below to add your first button.'">
+          <button class="btn btn-primary" (click)="addNewButton()">
             <i c8yIcon="plus"></i>Add first button
           </button>
-        </div>
+        </c8y-ui-empty-state>
       </div>
 
       <div *ngFor="let item of config.buttons; let buttonIndex = index">
@@ -20,50 +20,53 @@
         <div class="col-lg-6">
           <fieldset class="c8y-fieldset">
             <legend>Look & Feel</legend>
+
+
             <c8y-form-group>
               <label translate for="buttonTypes">Button icon</label>
 
-              <c8y-typeahead placeholder="Type to search for icons" [name]="'buttonIcon-' + buttonIndex"
-                container="body" (onSearch)="setIconFilterPipe(buttonIndex, $event)" [(ngModel)]="item.buttonIcon"
-                aria-label="Icon typeahead" [hideNew]="true">
-                <c8y-li class="p-l-8 p-r-8 c8y-list__item--link"
-                  *c8yFor="let icon of iconsList; pipe: getIconFilterPipe(buttonIndex)"
-                  (click)="item.buttonIcon = icon.name" [active]="item.buttonIcon === icon.name">
-                  <i [c8yIcon]="icon.name || icon.id"></i>
-                  <c8y-highlight [text]="icon.name || icon.id" [pattern]="getIconSearchPattern(buttonIndex)">
-                  </c8y-highlight>
-                </c8y-li>
-              </c8y-typeahead>
-
-              <!-- Display selected icon -->
-              <div *ngIf="item.buttonIcon" class="m-t-8">
-                <small>Selected icon:</small>
-                <i [c8yIcon]="item.buttonIcon"></i> {{ item.buttonIcon }}
-              </div>
-            </c8y-form-group>
-            <c8y-form-group>
-              <label translate for="buttonType">Button type</label>
-              <div class="dropdown" style="width: 100%" dropdown>
-                <button type="button" title="Type of button" style="width: 100%" dropdownToggle [ngClass]="
-                  'btn btn-default dropdown-toggle c8y-dropdown ' +
-                  (item.buttonType || 'btn-warning')
-                ">
-                  <span><i [c8yIcon]="item.buttonIcon"></i>
-                    {{
-                    item.buttonType ? item.buttonType : 'Choose color'
-                    }}</span>
+              <div class="dropdown icon-dropdown" style="width: 100%" dropdown>
+                <button type="button" class="btn btn-default dropdown-toggle" style="width: 100%" dropdownToggle>
+                  <span class="d-flex a-i-center">
+                    <i *ngIf="item.buttonIcon" [c8yIcon]="item.buttonIcon" class="m-r-8"></i>
+                    <span>{{ item.buttonIcon || 'Choose Icon' }}</span>
+                  </span>
+                  <span class="caret"></span>
                 </button>
 
                 <ul class="dropdown-menu" *dropdownMenu>
-                  <li (click)="item.buttonType = type" *ngFor="let type of buttonTypes">
-                    <button type="button" style="width: 100%" [ngClass]="'btn ' + type">
-                      <i [c8yButton]="item.buttonType" [c8yIcon]="item.buttonIcon"></i>
-                      {{ type }}
+                  <!-- Search input inside dropdown -->
+                  <li class="search-input-container">
+                    <input type="text" class="form-control input-sm" placeholder="Search icons..."
+                      [(ngModel)]="iconSearchTerms[buttonIndex]" [name]="'iconSearch-' + buttonIndex"
+                      (click)="$event.stopPropagation()" autocomplete="off" />
+                  </li>
+
+                  <!-- Icon list -->
+                  <li *ngFor="let iconClass of getFilteredIconsForButton(buttonIndex)">
+                    <button type="button" class="dropdown-item" (click)="item.buttonIcon = iconClass"
+                      [class.active]="item.buttonIcon === iconClass">
+                      <i [c8yIcon]="iconClass"></i>
+                      <span>{{ iconClass }}</span>
                     </button>
+                  </li>
+
+                  <!-- No results message -->
+                  <li *ngIf="getFilteredIconsForButton(buttonIndex).length === 0">
+                    <div class="p-16 text-muted text-center">
+                      No icons found matching "{{ iconSearchTerms[buttonIndex] }}"
+                    </div>
                   </li>
                 </ul>
               </div>
+
+              <!-- Display selected icon
+              <div *ngIf="item.buttonIcon" class="m-t-8 p-8 bg-level-1 d-flex a-i-center">
+                <i [c8yIcon]="item.buttonIcon" style="font-size: 20px;"></i>
+                <strong class="m-l-8">{{ item.buttonIcon }}</strong>
+              </div> -->
             </c8y-form-group>
+
             <c8y-form-group>
               <label translate for="buttonTypes">Button size</label>
               <div class="dropdown" style="width: 100%" dropdown>

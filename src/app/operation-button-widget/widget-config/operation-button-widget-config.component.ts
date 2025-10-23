@@ -15,6 +15,7 @@ import { map } from 'rxjs/operators';
 @Component({
   selector: 'app-operation-button-widget-config',
   templateUrl: './operation-button-widget-config.component.html',
+  styleUrls: ['./operation-button-widget-config.component.css'],
   viewProviders: [{ provide: ControlContainer, useExisting: NgForm }],
   standalone: true,
   imports: [CoreModule, CommonModule, FormsModule, IconDirective, BsDropdownModule, OperationButtonWidgetComponent, OperationValueComponent]
@@ -26,7 +27,7 @@ export class OperationButtonWidgetConfigComponent implements DynamicComponent, O
   public supportedOperations: string[] = [];
 
   @Input() config: IOperationButtonWidgetConfig = {};
-  
+
   buttonTypes = [
     'btn-default',
     'btn-primary',
@@ -42,13 +43,13 @@ export class OperationButtonWidgetConfigComponent implements DynamicComponent, O
     'btn-sm',
     'btn-xs',
   ];
-  
+
   availableIcons: string[] = [
     ...ICONS,
   ];
 
-  // Convert to IResultList format for c8y-typeahead
-  iconsList: IResultList<IIdentified>;
+  // Track search terms for icon filtering
+  iconSearchTerms: { [key: number]: string } = {};
 
   variableTypes: Array<'text' | 'number'> = ['text', 'number'];
 
@@ -72,15 +73,11 @@ export class OperationButtonWidgetConfigComponent implements DynamicComponent, O
     });
 
     // Convert icons array to IResultList format for typeahead
-    const iconsAsIIdentified: IIdentified[] = this.availableIcons.map(icon => ({ 
+    const iconsAsIIdentified: IIdentified[] = this.availableIcons.map(icon => ({
       id: icon,
-      name: icon 
+      name: icon
     } as any));
-    
-    this.iconsList = { 
-      data: iconsAsIIdentified, 
-      res: undefined 
-    } as IResultList<IIdentified>;
+
   }
 
   /**
@@ -90,7 +87,7 @@ export class OperationButtonWidgetConfigComponent implements DynamicComponent, O
    */
   setIconFilterPipe(buttonIndex: number, filterStr: string): void {
     this.iconSearchPatterns.set(buttonIndex, filterStr);
-    
+
     const filterPipe = pipe(
       map((data: any[]) => {
         if (!filterStr || filterStr.trim() === '') {
@@ -101,7 +98,7 @@ export class OperationButtonWidgetConfigComponent implements DynamicComponent, O
         );
       })
     );
-    
+
     this.iconFilterPipes.set(buttonIndex, filterPipe);
   }
 
@@ -159,7 +156,7 @@ export class OperationButtonWidgetConfigComponent implements DynamicComponent, O
     try {
       // Check if it's valid JSON first
       JSON.parse(operationValue);
-      
+
       // Regular expression to match ${variableName} pattern
       const variableRegex = /\$\{([^}]+)\}/g;
       const variables: string[] = [];
@@ -202,9 +199,9 @@ export class OperationButtonWidgetConfigComponent implements DynamicComponent, O
     if (!operationValue) return;
 
     console.log(`Operation value changed for button ${buttonIndex + 1}:`, operationValue);
-    
+
     const foundVariables = this.parseReferencedVariables(operationValue);
-    
+
     // Initialize operationVariables if not exists
     if (!button.operationVariables) {
       button.operationVariables = [];
@@ -230,5 +227,21 @@ export class OperationButtonWidgetConfigComponent implements DynamicComponent, O
         type: 'text' as const
       };
     });
+  }
+
+  /**
+   * Get filtered icons for a specific button
+   */
+  getFilteredIconsForButton(buttonIndex: number): string[] {
+    const searchTerm = this.iconSearchTerms[buttonIndex] || '';
+
+    if (!searchTerm.trim()) {
+      return this.availableIcons;
+    }
+
+    const lowerSearch = searchTerm.toLowerCase();
+    return this.availableIcons.filter(icon =>
+      icon.toLowerCase().includes(lowerSearch)
+    );
   }
 }
