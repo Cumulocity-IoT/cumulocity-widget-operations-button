@@ -23,12 +23,12 @@ import { IconDirective } from '@c8y/ngx-components';
 })
 export class ButtonInstanceComponent implements OnInit, OnChanges {
   @Input() config: IOperationButtonConfig = {
-    label: '',
+    buttonLabel: '',
     operationFragment: '',
-    description: '',
+    buttonTitle: '',
     buttonType: '',
     operationValue: '',
-    showModal: false
+    requireConfirmationOperation: false
   };
   @Output() clickedOperation = new EventEmitter<IOperationButtonConfig>();
   modalRef?: BsModalRef;
@@ -60,7 +60,7 @@ export class ButtonInstanceComponent implements OnInit, OnChanges {
   }
 
   openModal(template: TemplateRef<any>, size: 'modal-lg'): void {
-    if (!this.config.showModal) {
+    if (!this.config.requireConfirmationOperation) {
       this.clickedOperation.emit(this.config);
     } else {
       this.modalRef = this.modalService.show(template, { class: size });

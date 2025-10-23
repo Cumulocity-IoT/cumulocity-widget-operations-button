@@ -22,20 +22,23 @@
             <legend>Look & Feel</legend>
             <c8y-form-group>
               <label translate for="buttonTypes">Button icon</label>
-              <div class="dropdown" style="width: 100%" dropdown>
-                <button type="button" title="Icon for button" style="width: 100%" dropdownToggle
-                  class="btn btn-default dropdown-toggle c8y-dropdown">
-                  <span><i [c8yIcon]="item.icon || 'refresh'"></i>
-                    {{ item.icon ? item.icon : 'Choose Icon' }}</span>
-                  <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu" *dropdownMenu>
-                  <li (click)="item.icon = iconClass" *ngFor="let iconClass of availableIcons">
-                    <button type="button">
-                      <i [c8yIcon]="iconClass"></i> {{ iconClass }}
-                    </button>
-                  </li>
-                </ul>
+
+              <c8y-typeahead placeholder="Type to search for icons" [name]="'buttonIcon-' + buttonIndex"
+                container="body" (onSearch)="setIconFilterPipe(buttonIndex, $event)" [(ngModel)]="item.buttonIcon"
+                aria-label="Icon typeahead" [hideNew]="true">
+                <c8y-li class="p-l-8 p-r-8 c8y-list__item--link"
+                  *c8yFor="let icon of iconsList; pipe: getIconFilterPipe(buttonIndex)"
+                  (click)="item.buttonIcon = icon.name" [active]="item.buttonIcon === icon.name">
+                  <i [c8yIcon]="icon.name || icon.id"></i>
+                  <c8y-highlight [text]="icon.name || icon.id" [pattern]="getIconSearchPattern(buttonIndex)">
+                  </c8y-highlight>
+                </c8y-li>
+              </c8y-typeahead>
+
+              <!-- Display selected icon -->
+              <div *ngIf="item.buttonIcon" class="m-t-8">
+                <small>Selected icon:</small>
+                <i [c8yIcon]="item.buttonIcon"></i> {{ item.buttonIcon }}
               </div>
             </c8y-form-group>
             <c8y-form-group>
@@ -45,7 +48,7 @@
                   'btn btn-default dropdown-toggle c8y-dropdown ' +
                   (item.buttonType || 'btn-warning')
                 ">
-                  <span><i [c8yIcon]="item.icon"></i>
+                  <span><i [c8yIcon]="item.buttonIcon"></i>
                     {{
                     item.buttonType ? item.buttonType : 'Choose color'
                     }}</span>
@@ -54,7 +57,7 @@
                 <ul class="dropdown-menu" *dropdownMenu>
                   <li (click)="item.buttonType = type" *ngFor="let type of buttonTypes">
                     <button type="button" style="width: 100%" [ngClass]="'btn ' + type">
-                      <i [c8yButton]="item.buttonType" [c8yIcon]="item.icon"></i>
+                      <i [c8yButton]="item.buttonType" [c8yIcon]="item.buttonIcon"></i>
                       {{ type }}
                     </button>
                   </li>
@@ -77,29 +80,30 @@
                 <ul class="dropdown-menu" *dropdownMenu>
                   <li (click)="item.buttonSize = size" *ngFor="let size of buttonSizes">
                     <button type="button" style="width: 100%" [ngClass]="'btn ' + size">
-                      <i [c8yButton]="item.buttonSize" [c8yIcon]="item.icon"></i>
+                      <i [c8yButton]="item.buttonSize" [c8yIcon]="item.buttonIcon"></i>
                       {{ size }}
                     </button>
                   </li>
                 </ul>
               </div>
             </c8y-form-group>
-            <c8y-form-group [hasWarning]="!item.label || item.label.length === 0">
-              <label translate for="label">Label</label>
+            <c8y-form-group [hasWarning]="!item.buttonLabel || item.buttonLabel.length === 0">
+              <label translate for="label">Button label</label>
               <input id="label" class="form-control" type="text" name="label" [maxlength]="254" autocomplete="off"
-                placeholder="e.g. Restart" [(ngModel)]="item.label" required />
+                placeholder="e.g. Restart" [(ngModel)]="item.buttonLabel" required />
               <c8y-messages>
-                <c8y-message *ngIf="!item.label || item.label.length === 0" translate></c8y-message>
+                <c8y-message *ngIf="!item.buttonLabel || item.buttonLabel.length === 0" translate></c8y-message>
                 <c8y-message name="required" text="'The label is required'"></c8y-message>
               </c8y-messages>
             </c8y-form-group>
 
-            <c8y-form-group [hasWarning]="!item.description || item.description.length === 0">
-              <label translate for="description">Description</label>
-              <input id="description" class="form-control" type="text" name="description" [maxlength]="254"
-                autocomplete="off" placeholder="e.g. Restart device" [(ngModel)]="item.description" required />
+            <c8y-form-group [hasWarning]="!item.buttonTitle || item.buttonTitle.length === 0">
+              <label translate for="buttonTitle">Button title</label>
+              <input id="buttonTitle" class="form-control" type="text" name="buttonTitle" [maxlength]="254"
+                autocomplete="off" placeholder="e.g. Confirm to restart device" [(ngModel)]="item.buttonTitle"
+                required />
               <c8y-messages>
-                <c8y-message *ngIf="!item.description || item.description.length === 0" translate></c8y-message>
+                <c8y-message *ngIf="!item.buttonTitle || item.buttonTitle.length === 0" translate></c8y-message>
                 <c8y-message name="required" text="'The description is required'"></c8y-message>
               </c8y-messages>
             </c8y-form-group>
@@ -153,14 +157,19 @@
             <c8y-form-group>
               <label translate for="icon">Requires confirmation</label>
               <label class="c8y-switch" title="{{ 'Active' | translate }}">
-                <input type="checkbox" [(ngModel)]="item.showModal" />
+                <input type="checkbox" [(ngModel)]="item.requireConfirmationOperation" />
                 <span></span>
                 <span>
-                  {{ 'Confirm operation' }}
+                  {{ 'Requires confirmation of operation' }}
                 </span>
               </label>
-              <input *ngIf="item.showModal" id="modalText" class="form-control" type="text" name="description"
-                [maxlength]="254" autocomplete="off" placeholder="e.g. Restart device" [(ngModel)]="item.modalText" />
+
+            </c8y-form-group>
+
+            <c8y-form-group *ngIf="item.requireConfirmationOperation">
+              <label translate for="icon">Confirmation text</label>
+              <input id="confirmationText" class="form-control" type="text" name="confirmationText" [maxlength]="254"
+                autocomplete="off" placeholder="Confirm to send this operation" [(ngModel)]="item.confirmationText" />
             </c8y-form-group>
 
           </fieldset>

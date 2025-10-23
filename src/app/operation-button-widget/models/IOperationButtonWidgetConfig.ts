@@ -7,17 +7,17 @@ export interface IOperationButtonWidgetConfig {
 }
 
 export interface IOperationButtonConfig {
-  label: string;
-  icon?: string;
+  buttonLabel: string;
+  buttonType?: string;
+  buttonSize?: string;
+  buttonTitle: string;
+  buttonIcon?: string;
   operationFragment: string;
   customOperation?: boolean;
   operationVariables?: IOperationVariable[];
-  buttonType?: string;
-  buttonSize?: string;
-  description: string;
   operationValue: string;
-  showModal: boolean;
-  modalText?: string;
+  requireConfirmationOperation: boolean;
+  confirmationText?: string;
 }
 
 export interface IOperationVariable {

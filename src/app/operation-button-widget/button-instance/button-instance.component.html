@@ -1,10 +1,10 @@
 <button
   class="btn"
   [ngClass]="classes"
-  [title]="config.description"
+  [title]="config.buttonTitle"
   (click)="openModal(confirm, 'modal-sm')">
-  <i *ngIf="config?.icon" [c8yIcon]="config.icon"></i>
-  {{ config?.label }}
+  <i *ngIf="config?.buttonIcon" [c8yIcon]="config.buttonIcon"></i>
+  {{ config.buttonLabel }}
 </button>
 
 <ng-template #confirm>
@@ -15,7 +15,7 @@
           <i
             c8y-icon="exclamation-triangle"
             class="dlt-c8y-icon-exclamation-triangle"></i>
-          <span ng-show="title">{{ config?.modalText }}</span>
+          <span ng-show="title">{{ config.confirmationText }}</span>
         </h3>
         <div class="alert-footer">
           <button

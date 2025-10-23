@@ -5,9 +5,12 @@ import { ControlContainer, FormsModule, NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { OperationButtonWidgetComponent } from '../widget/operation-button-widget.component';
 import { WidgetConfigService } from '@c8y/ngx-components/context-dashboard';
-import { AlertService, CoreModule, DynamicComponent, IconDirective } from '@c8y/ngx-components';
+import { AlertService, CoreModule, DynamicComponent, IconDirective, ForOfFilterPipe } from '@c8y/ngx-components';
 import { OperationValueComponent } from './operationValue/operation-value.component';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { IIdentified, IResultList } from '@c8y/client';
+import { pipe } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-operation-button-widget-config',
@@ -44,7 +47,14 @@ export class OperationButtonWidgetConfigComponent implements DynamicComponent, O
     ...ICONS,
   ];
 
+  // Convert to IResultList format for c8y-typeahead
+  iconsList: IResultList<IIdentified>;
+
   variableTypes: Array<'text' | 'number'> = ['text', 'number'];
+
+  // Filter pipe and pattern for icon search
+  iconFilterPipes: Map<number, ForOfFilterPipe> = new Map();
+  iconSearchPatterns: Map<number, string> = new Map();
 
   @ViewChild('sampleWidgetPreview')
   set previewMapSet(template: TemplateRef<any>) {
@@ -60,6 +70,53 @@ export class OperationButtonWidgetConfigComponent implements DynamicComponent, O
       this.alert.success('Widget added successfully', JSON.stringify(config, null, 2));
       return true;
     });
+
+    // Convert icons array to IResultList format for typeahead
+    const iconsAsIIdentified: IIdentified[] = this.availableIcons.map(icon => ({ 
+      id: icon,
+      name: icon 
+    } as any));
+    
+    this.iconsList = { 
+      data: iconsAsIIdentified, 
+      res: undefined 
+    } as IResultList<IIdentified>;
+  }
+
+  /**
+   * Set filter pipe for icon search
+   * @param buttonIndex - Index of the button
+   * @param filterStr - Search string
+   */
+  setIconFilterPipe(buttonIndex: number, filterStr: string): void {
+    this.iconSearchPatterns.set(buttonIndex, filterStr);
+    
+    const filterPipe = pipe(
+      map((data: any[]) => {
+        if (!filterStr || filterStr.trim() === '') {
+          return data;
+        }
+        return data.filter((icon: any) =>
+          icon.name && icon.name.toLowerCase().includes(filterStr.toLowerCase())
+        );
+      })
+    );
+    
+    this.iconFilterPipes.set(buttonIndex, filterPipe);
+  }
+
+  /**
+   * Get filter pipe for a specific button
+   */
+  getIconFilterPipe(buttonIndex: number): ForOfFilterPipe {
+    return this.iconFilterPipes.get(buttonIndex) || pipe(map(data => data));
+  }
+
+  /**
+   * Get search pattern for a specific button
+   */
+  getIconSearchPattern(buttonIndex: number): string {
+    return this.iconSearchPatterns.get(buttonIndex) || '';
   }
 
   addNewButton(): void {
@@ -68,15 +125,15 @@ export class OperationButtonWidgetConfigComponent implements DynamicComponent, O
     }
 
     this.config.buttons.push({
-      icon: undefined,
-      label: 'Restart',
-      description: 'Restart device',
+      buttonIcon: undefined,
+      buttonLabel: 'Restart',
+      buttonTitle: 'Restart device',
       operationFragment: 'c8y_Restart',
       buttonType: "btn-default",
       buttonSize: "btn-default",
       operationValue: '{}',
-      showModal: false,
-      modalText: 'Confirm device restart',
+      requireConfirmationOperation: false,
+      confirmationText: 'Confirm device restart',
       customOperation: false,
       operationVariables: []
     });
@@ -88,6 +145,9 @@ export class OperationButtonWidgetConfigComponent implements DynamicComponent, O
 
   removeButton(index: number): void {
     this.config.buttons.splice(index, 1);
+    // Clean up filter pipes
+    this.iconFilterPipes.delete(index);
+    this.iconSearchPatterns.delete(index);
   }
 
   /**

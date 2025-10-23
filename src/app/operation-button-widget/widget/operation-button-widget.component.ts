@@ -215,7 +215,7 @@ export class OperationButtonWidgetComponent implements OnInit, OnChanges {
   }
 
   onButtonClick(button: IOperationButtonConfig, buttonIndex: number): void {
-    console.log('Button clicked:', button.label, 'index:', buttonIndex);
+    console.log('Button clicked:', button.buttonLabel, 'index:', buttonIndex);
 
     // Validate variables before proceeding
     if (!this.validateVariables(button, buttonIndex)) {
@@ -237,7 +237,7 @@ export class OperationButtonWidgetComponent implements OnInit, OnChanges {
 
         console.log('Creating operation:', {
           deviceId: this.config.device.id,
-          description: button.description || button.label,
+          description: button.buttonTitle || button.buttonLabel,
           [button.operationFragment]: parsedOperationValue,
         });
 
@@ -245,24 +245,24 @@ export class OperationButtonWidgetComponent implements OnInit, OnChanges {
         this.operationsService
           .create({
             deviceId: this.config.device.id,
-            description: button.description || button.label,
+            description: button.buttonTitle || button.buttonLabel,
             [button.operationFragment]: parsedOperationValue,
           })
           .then(() => {
             this.alertService.success(
-              `Operation '${button.label}' successfully created.`
+              `Operation '${button.buttonLabel}' successfully created.`
             );
           })
           .catch((error) => {
             console.error('Operation creation failed:', error);
             this.alertService.danger(
-              `Failed to create '${button.label}' operation.`
+              `Failed to create '${button.buttonLabel}' operation.`
             );
           });
       } catch (error) {
         console.error('Failed to parse operation value:', error);
         this.alertService.danger(
-          `Invalid operation value for '${button.label}'. Please check the configuration.`
+          `Invalid operation value for '${button.buttonLabel}'. Please check the configuration.`
         );
       }
     } else {
