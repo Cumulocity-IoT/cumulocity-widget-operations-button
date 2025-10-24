@@ -1,37 +1,50 @@
-<div class="d-flex flex-wrap j-c-center a-i-center fit-h fit-v">
+<div class="p-l-24 p-t-16 p-r-16 p-b-16">
   <ng-container *ngFor="let item of config?.buttons; let i = index">
-    <div class="p-4" style="width: 100%; max-width: 400px;">
+    <div class="m-b-24">
       <!-- Button Instance -->
-      <div class="text-center m-b-8">
+      <div class="m-b-8">
         <app-button-instance [config]="item" (clickedOperation)="onButtonClick(item, i)">
         </app-button-instance>
       </div>
 
       <!-- Variables Section (Collapsible) -->
       <div *ngIf="hasVariables(item)">
-        <button type="button" class="btn btn-link text-left" [attr.aria-expanded]="isExpanded(i)"
-          (click)="toggleVariables(i)"
-          style="width: 100%; white-space: nowrap; display: flex; align-items: center; padding: 4px 8px;">
-          <i [c8yIcon]="isExpanded(i) ? 'chevron-down' : 'chevron-right'" style="margin-right: 8px;"></i>
-          <span>Parameters ({{ item.operationVariables?.length }})</span>
-        </button>
+        <div 
+          (click)="toggleVariables(i); $event.stopPropagation()"
+          style="cursor: pointer; display: flex; align-items: center; padding: 8px 0;">
+          <i 
+            [c8yIcon]="isExpanded(i) ? 'chevron-down' : 'chevron-right'" 
+            style="font-size: 16px; margin-right: 8px; min-width: 16px;">
+          </i>
+          <span style="font-size: 14px; white-space: nowrap;">
+            Parameters ({{ item.operationVariables?.length }})
+          </span>
+        </div>
 
-        <div class="collapse bg-level-1" [collapse]="!isExpanded(i)" [isAnimated]="true">
-          <div class="p-16">
-            <div *ngFor="let variable of item.operationVariables" class="m-b-8">
-              <label class="text-truncate">
-                <small><strong>{{ variable.label }}</strong></small>
-                <small class="text-muted" *ngIf="variable.type"> ({{ variable.type }})</small>
+        <div class="collapse" [collapse]="!isExpanded(i)" [isAnimated]="true">
+          <div class="bg-level-1 p-16 m-t-8" style="border-left: 3px solid #1776bf;">
+            <div *ngFor="let variable of item.operationVariables" class="m-b-16">
+              <label style="display: block; margin-bottom: 4px;">
+                <strong>{{ variable.label }}</strong>
+                <span class="text-muted" *ngIf="variable.type"> ({{ variable.type }})</span>
               </label>
 
               <!-- Text input -->
-              <input *ngIf="variable.type === 'text' || !variable.type" class="form-control input-sm" type="text"
+              <input 
+                *ngIf="variable.type === 'text' || !variable.type" 
+                class="form-control" 
+                type="text"
                 [(ngModel)]="getVariableValues(i)[variable.varName]"
+                [name]="'var-' + i + '-' + variable.varName"
                 [placeholder]="variable.default || 'Enter value'" />
 
               <!-- Number input -->
-              <input *ngIf="variable.type === 'number'" class="form-control input-sm" type="number"
+              <input 
+                *ngIf="variable.type === 'number'" 
+                class="form-control" 
+                type="number"
                 [(ngModel)]="getVariableValues(i)[variable.varName]"
+                [name]="'var-' + i + '-' + variable.varName"
                 [placeholder]="variable.default || 'Enter value'" />
             </div>
           </div>

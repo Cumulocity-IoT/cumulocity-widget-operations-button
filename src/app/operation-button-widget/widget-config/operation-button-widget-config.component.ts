@@ -8,7 +8,7 @@ import { WidgetConfigService } from '@c8y/ngx-components/context-dashboard';
 import { AlertService, CoreModule, DynamicComponent, IconDirective, ForOfFilterPipe } from '@c8y/ngx-components';
 import { OperationValueComponent } from './operationValue/operation-value.component';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { IIdentified, IResultList } from '@c8y/client';
+import { IIdentified } from '@c8y/client';
 import { pipe } from 'rxjs';
 import { map } from 'rxjs/operators';
 
