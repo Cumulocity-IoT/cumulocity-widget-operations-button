@@ -1,9 +1,8 @@
 import { Component, inject, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { IOperationButtonWidgetConfig, IOperationVariable } from '../models/IOperationButtonWidgetConfig';
+import { IOperationVariable, IOperationWidgetConfig } from '../models/IOperationButtonConfig';
 import { ICONS } from './icons-constant';
 import { ControlContainer, FormsModule, NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { OperationButtonWidgetComponent } from '../widget/operation-button-widget.component';
 import { WidgetConfigService } from '@c8y/ngx-components/context-dashboard';
 import { AlertService, CoreModule, DynamicComponent, IconDirective, ForOfFilterPipe } from '@c8y/ngx-components';
 import { OperationValueComponent } from './operationValue/operation-value.component';
@@ -13,20 +12,20 @@ import { pipe } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-operation-button-widget-config',
-  templateUrl: './operation-button-widget-config.component.html',
-  styleUrls: ['./operation-button-widget-config.component.css'],
+  selector: 'app-operation-button-config',
+  templateUrl: './operation-button-config.component.html',
+  styleUrls: ['./operation-button-config.component.css'],
   viewProviders: [{ provide: ControlContainer, useExisting: NgForm }],
   standalone: true,
-  imports: [CoreModule, CommonModule, FormsModule, IconDirective, BsDropdownModule, OperationButtonWidgetComponent, OperationValueComponent]
+  imports: [CoreModule, CommonModule, FormsModule, IconDirective, BsDropdownModule, OperationValueComponent]
 })
-export class OperationButtonWidgetConfigComponent implements DynamicComponent, OnInit {
+export class OperationButtonConfigComponent implements DynamicComponent, OnInit {
 
   private readonly alert = inject(AlertService);
   private readonly widgetConfigService = inject(WidgetConfigService);
   public supportedOperations: string[] = [];
 
-  @Input() config: IOperationButtonWidgetConfig = {};
+  @Input() config: IOperationWidgetConfig = {};
 
   buttonTypes = [
     'btn-default',

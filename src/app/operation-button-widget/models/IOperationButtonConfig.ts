@@ -1,4 +1,4 @@
-export interface IOperationButtonWidgetConfig {
+export interface IOperationWidgetConfig {
   device?: {
     id: string;
     name?: string;

@@ -8,7 +8,7 @@ import {
   Output,
   TemplateRef,
 } from '@angular/core';
-import { IOperationButtonConfig } from '../models/IOperationButtonWidgetConfig';
+import { IOperationButtonConfig } from '../models/IOperationButtonConfig';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { CommonModule, NgClass } from '@angular/common';
 import { IconDirective } from '@c8y/ngx-components';

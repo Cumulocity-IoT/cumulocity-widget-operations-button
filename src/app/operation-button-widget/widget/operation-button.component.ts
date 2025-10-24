@@ -4,19 +4,19 @@ import { AlertService, CommonModule, CoreModule, FormsModule } from '@c8y/ngx-co
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import {
   IOperationButtonConfig,
-  IOperationButtonWidgetConfig,
   IOperationVariable,
-} from '../models/IOperationButtonWidgetConfig';
+  IOperationWidgetConfig,
+} from '../models/IOperationButtonConfig';
 import { ButtonInstanceComponent } from '../button-instance/button-instance.component';
 
 @Component({
-  selector: 'app-operation-button-widget',
-  templateUrl: './operation-button-widget.component.html',
+  selector: 'app-operation-button',
+  templateUrl: './operation-button.component.html',
   standalone: true,
   imports: [CommonModule, FormsModule, CoreModule, CollapseModule, ButtonInstanceComponent]
 })
-export class OperationButtonWidgetComponent implements OnInit, OnChanges {
-  @Input() config: IOperationButtonWidgetConfig = {};
+export class OperationButtonComponent implements OnInit, OnChanges {
+  @Input() config: IOperationWidgetConfig = {};
 
   // Track variable values and expanded state separately
   variableValues: Map<number, { [key: string]: string | number }> = new Map();

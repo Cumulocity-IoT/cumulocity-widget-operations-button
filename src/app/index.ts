@@ -7,15 +7,15 @@ import {
   importConfigWithDevice
 } from '@c8y/ngx-components/widgets/import-export-config';
 import { assetPaths } from '../assets/assets';
-import { OperationButtonWidgetComponent } from './operation-button-widget/widget/operation-button-widget.component';
-import { OperationButtonWidgetConfigComponent } from './operation-button-widget/widget-config/operation-button-widget-config.component';
+import { OperationButtonComponent } from './operation-button-widget/widget/operation-button.component';
+import { OperationButtonConfigComponent } from './operation-button-widget/widget-config/operation-button-config.component';
 
 export const samplePluginWidgetDefinition = {
     id: 'operation-button-widget',
     label: 'Operation Button Widget',
   description: gettext('Widget to create an operation'),
-  component: OperationButtonWidgetComponent,
-  configComponent: OperationButtonWidgetConfigComponent,
+  component: OperationButtonComponent,
+  configComponent: OperationButtonConfigComponent,
   previewImage: assetPaths.previewImage,
   data: {
     schema: () =>
