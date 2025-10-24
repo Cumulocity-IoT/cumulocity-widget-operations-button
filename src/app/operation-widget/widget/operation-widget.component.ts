@@ -2,20 +2,16 @@ import { Component, Input, OnInit, OnChanges } from '@angular/core';
 import { OperationService } from '@c8y/client';
 import { AlertService, CommonModule, CoreModule, FormsModule } from '@c8y/ngx-components';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
-import {
-  IOperationButtonConfig,
-  IOperationVariable,
-  IOperationWidgetConfig,
-} from '../models/IOperationButtonConfig';
-import { ButtonInstanceComponent } from '../button-instance/button-instance.component';
+import { OperationButtonComponent } from '../button/operation-button.component';
+import { IOperationButtonConfig, IOperationWidgetConfig } from '../models/operation-widget-model';
 
 @Component({
-  selector: 'app-operation-button',
-  templateUrl: './operation-button.component.html',
+  selector: 'app-operation-widget',
+  templateUrl: './operation-widget.component.html',
   standalone: true,
-  imports: [CommonModule, FormsModule, CoreModule, CollapseModule, ButtonInstanceComponent]
+  imports: [CommonModule, FormsModule, CoreModule, CollapseModule, OperationButtonComponent]
 })
-export class OperationButtonComponent implements OnInit, OnChanges {
+export class OperationWidgetComponent implements OnInit, OnChanges {
   @Input() config: IOperationWidgetConfig = {};
 
   // Track variable values and expanded state separately

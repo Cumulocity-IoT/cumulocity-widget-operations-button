@@ -1,5 +1,5 @@
 import { Component, inject, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { IOperationVariable, IOperationWidgetConfig } from '../models/IOperationButtonConfig';
+import { IOperationVariable, IOperationWidgetConfig } from '../models/operation-widget-model';
 import { ICONS } from './icons-constant';
 import { ControlContainer, FormsModule, NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -10,16 +10,17 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { IIdentified } from '@c8y/client';
 import { pipe } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { OperationWidgetComponent } from '../widget/operation-widget.component';
 
 @Component({
-  selector: 'app-operation-button-config',
-  templateUrl: './operation-button-config.component.html',
-  styleUrls: ['./operation-button-config.component.css'],
+  selector: 'app-operation-widget-config',
+  templateUrl: './operation-widget-config.component.html',
+  styleUrls: ['./operation-widget-config.component.css'],
   viewProviders: [{ provide: ControlContainer, useExisting: NgForm }],
   standalone: true,
-  imports: [CoreModule, CommonModule, FormsModule, IconDirective, BsDropdownModule, OperationValueComponent]
+  imports: [CoreModule, CommonModule, FormsModule, IconDirective, BsDropdownModule, OperationWidgetComponent, OperationValueComponent]
 })
-export class OperationButtonConfigComponent implements DynamicComponent, OnInit {
+export class OperationWidgetConfigComponent implements DynamicComponent, OnInit {
 
   private readonly alert = inject(AlertService);
   private readonly widgetConfigService = inject(WidgetConfigService);

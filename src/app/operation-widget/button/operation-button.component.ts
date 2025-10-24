@@ -8,20 +8,20 @@ import {
   Output,
   TemplateRef,
 } from '@angular/core';
-import { IOperationButtonConfig } from '../models/IOperationButtonConfig';
+import { IOperationButtonConfig } from '../models/operation-widget-model';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { CommonModule, NgClass } from '@angular/common';
 import { IconDirective } from '@c8y/ngx-components';
 
 @Component({
-  selector: 'app-button-instance',
-  templateUrl: './button-instance.component.html',
+  selector: 'app-operation-button',
+  templateUrl: './operation-button.component.html',
   standalone: true,
   imports: [
     CommonModule, NgClass, IconDirective
   ]
 })
-export class ButtonInstanceComponent implements OnInit, OnChanges {
+export class OperationButtonComponent implements OnInit, OnChanges {
   @Input() config: IOperationButtonConfig = {
     buttonLabel: '',
     operationFragment: '',

@@ -1,26 +1,10 @@
-# SAMPLE-PLUGIN Readme Example
+# Cumulocity Operation Widget
 
-## Adding a Readme File to Your Plugin
+## Purpose
 
-Follow these steps to include a readme file in your plugin:
+This widget plugin allows you to send operations to a selected device in Cumulocity. Key features include:
 
-1. Add the `readmePath` property to the `exports` array in your `cumulocity.config.ts` file.
-2. Place the readme file in the same folder as your `index.ts` file.
-
-### Example
-
-```ts
-exports: [
-  {
-    name: 'Example sample plugin view',
-    module: 'OperationButtonWidgetModule',
-    path: './src/app/index.ts',
-    readmePath: './src/app/README.md',
-    description: 'Adds a custom widget and navigator node to the shell application'
-  }
-];
-```
-
-### What Happens When You Build?
-
-When you build your plugin (e.g., by running `ng build sample-plugin`), the generated zip file will include the readme file. It will be placed in a folder named after your module, such as `SamplePluginModule` or `OperationButtonWidgetModule`.
+- **Device Selection**: Choose a target device to send operations to
+- **Configurable Parameters**: Define custom parameters for each operation
+- **Dynamic UI**: Update parameter values directly in the UI when invoking the operation
+- **Easy Integration**: Install as a plugin to any Cumulocity application

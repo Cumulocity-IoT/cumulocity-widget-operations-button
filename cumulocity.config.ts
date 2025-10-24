@@ -7,10 +7,11 @@ export default {
     description,
     version,
     name,
-      key: 'c8y-pkg-widget-operation-button-key',
+      key: 'c8y-pkg-operation-widget-key',
     contentSecurityPolicy:
       "base-uri 'none'; default-src 'self' 'unsafe-inline' http: https: ws: wss:; connect-src 'self' http: https: ws: wss:;  script-src 'self' *.bugherd.com *.twitter.com *.twimg.com *.aptrinsic.com 'unsafe-inline' 'unsafe-eval' data:; style-src * 'unsafe-inline' blob:; img-src * data: blob:; font-src * data:; frame-src *; worker-src 'self' blob:;",
     dynamicOptionsUrl: true,
+    contextPath: 'c8y-pkg-operation-button-widget',
     remotes: {
       [name]: ['OperationButtonWidgetModule']
     },
@@ -20,7 +21,7 @@ export default {
     license,
     exports: [
       {
-        name: "Operation Button Widget Plugin",
+        name: "Operation Button Widget",
         module: 'OperationButtonWidgetModule',
         path: './src/app/index.ts',
         readmePath: './src/app/README.md',

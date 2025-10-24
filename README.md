@@ -1,4 +1,4 @@
-# Cumulocity Operation Button Widget Plugin
+# Cumulocity Operation Widget
 
 ## Purpose
 

@@ -74,7 +74,7 @@
                   'btn btn-default dropdown-toggle c8y-dropdown ' +
                   (item.buttonSize || 'btn-warning')
                 ">
-                  <span><i [c8yIcon]="item.icon"></i>
+                  <span><i [c8yIcon]="item.buttonIcon"></i>
                     {{
                     item.buttonSize ? item.buttonSize : 'Choose size'
                     }}</span>
@@ -263,6 +263,6 @@
   </div>
 
   <ng-template #sampleWidgetPreview>
-    <app-operation-button-widget [config]="config"></app-operation-button-widget>
+    <app-operation-widget [config]="config"></app-operation-widget>
   </ng-template>
 </div>
