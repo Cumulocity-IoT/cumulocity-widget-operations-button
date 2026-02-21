@@ -9,7 +9,7 @@
     }
     @if (config.device) {
       <div class="col-sm-12">
-        @if (!config?.buttons?.length) {
+        @if (!config.buttons?.length) {
           <div>
             <c8y-ui-empty-state [icon]="'c8y-smart-rules'" [title]="'No Buttons configured yet.'"
               [subtitle]="'Click below to add your first button.'">
