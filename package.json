@@ -3,7 +3,7 @@
   "author": "christof.strack@cumulocity.com",
   "license":"Apache-2.0",
   "description": "Widget to create an operation",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -12,38 +12,50 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
+  "prettier": {
+    "printWidth": 100,
+    "singleQuote": true,
+    "overrides": [
+      {
+        "files": "*.html",
+        "options": {
+          "parser": "angular"
+        }
+      }
+    ]
+  },
   "private": true,
   "dependencies": {
-    "@angular/cdk": "^19.2.18",
-    "@angular/common": "^19.2.0",
-    "@angular/compiler": "^19.2.0",
-    "@angular/core": "^19.2.0",
-    "@angular/forms": "^19.2.0",
-    "@angular/platform-browser": "^19.2.0",
-    "@angular/platform-browser-dynamic": "^19.2.0",
-    "@angular/router": "^19.2.0",
-    "@c8y/bootstrap": "^1022.44.3",
-    "@c8y/client": "^1022.44.3",
-    "@c8y/ngx-components": "^1022.44.3",
-    "@c8y/style": "^1022.44.3",
-    "ngx-bootstrap": "19.0.2",
-    "rxjs": "7.8.1",
+    "@angular/cdk": "^20.2.14",
+    "@angular/common": "^20.3.0",
+    "@angular/compiler": "^20.3.0",
+    "@angular/core": "^20.3.0",
+    "@angular/forms": "^20.3.0",
+    "@angular/platform-browser": "^20.3.0",
+    "@angular/router": "^20.3.0",
+    "@c8y/bootstrap": "1023.47.1",
+    "@c8y/client": "1023.47.1",
+    "@c8y/ngx-components": "1023.47.1",
+    "@c8y/style": "1023.47.1",
+    "monaco-editor": "~0.53.0",
+    "ngx-bootstrap": "20.0.2",
+    "rxjs": "7.8.2",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^19.2.15",
-    "@angular/cli": "^19.2.15",
-    "@angular/compiler-cli": "^19.2.0",
-    "@c8y/devkit": "^1022.44.3",
-    "@c8y/options": "^1022.44.3",
+    "@angular/build": "^20.3.12",
+    "@angular/cli": "^20.3.12",
+    "@angular/compiler-cli": "^20.3.0",
+    "@c8y/devkit": "1023.47.1",
+    "@c8y/options": "1023.47.1",
     "@types/jasmine": "~5.1.0",
-    "jasmine-core": "~5.6.0",
+    "jasmine-core": "~5.9.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "typescript": "~5.7.2"
+    "typescript": "~5.9.2"
   }
 }

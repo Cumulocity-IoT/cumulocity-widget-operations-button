@@ -1,264 +1,306 @@
 <div class="d-flex">
   <div class="col-sm-12">
-    <div *ngIf="!config.device" class="col-sm-12">
-      <c8y-ui-empty-state [icon]="'c8y-smart-rules'" [title]="'No device selected yet.'"
-        [subtitle]="'Select a device first.'">
-      </c8y-ui-empty-state>
-    </div>
-    <div *ngIf="config.device" class="col-sm-12">
-      <div *ngIf="!config?.buttons?.length">
-        <c8y-ui-empty-state [icon]="'c8y-smart-rules'" [title]="'No Buttons configured yet.'"
-          [subtitle]="'Click below to add your first button.'">
-          <button class="btn btn-primary" (click)="addNewButton()">
-            <i c8yIcon="plus"></i>Add first button
-          </button>
+    @if (!config.device) {
+      <div class="col-sm-12">
+        <c8y-ui-empty-state [icon]="'c8y-smart-rules'" [title]="'No device selected yet.'"
+          [subtitle]="'Select a device first.'">
         </c8y-ui-empty-state>
       </div>
+    }
+    @if (config.device) {
+      <div class="col-sm-12">
+        @if (!config?.buttons?.length) {
+          <div>
+            <c8y-ui-empty-state [icon]="'c8y-smart-rules'" [title]="'No Buttons configured yet.'"
+              [subtitle]="'Click below to add your first button.'">
+              <button class="btn btn-primary" (click)="addNewButton()">
+                <i c8yIcon="plus"></i>Add first button
+              </button>
+            </c8y-ui-empty-state>
+          </div>
+        }
 
-      <div *ngFor="let item of config.buttons; let buttonIndex = index">
-        <div class="form-block legend col-lg-12"> {{ buttonIndex + 1 }}. Button</div>
-        <div class="col-lg-6">
-          <fieldset class="c8y-fieldset">
-            <legend>Look & Feel</legend>
+        @for (item of config.buttons; track $index; let buttonIndex = $index) {
+          <div>
+            <div class="form-block legend col-lg-12"> {{ buttonIndex + 1 }}. Button</div>
+            <div class="col-lg-6">
+              <fieldset class="c8y-fieldset">
+                <legend>Look & Feel</legend>
 
 
-            <c8y-form-group>
-              <label translate for="buttonTypes">Button icon</label>
+                <c8y-form-group>
+                  <label translate for="buttonTypes">Button icon</label>
 
-              <div class="dropdown icon-dropdown" style="width: 100%" dropdown>
-                <button type="button" class="btn btn-default dropdown-toggle" style="width: 100%" dropdownToggle>
-                  <span class="d-flex a-i-center">
-                    <i *ngIf="item.buttonIcon" [c8yIcon]="item.buttonIcon" class="m-r-8"></i>
-                    <span>{{ item.buttonIcon || 'Choose Icon' }}</span>
-                  </span>
-                  <span class="caret"></span>
-                </button>
-
-                <ul class="dropdown-menu" *dropdownMenu>
-                  <!-- Search input inside dropdown -->
-                  <li class="search-input-container">
-                    <input type="text" class="form-control input-sm" placeholder="Search icons..."
-                      [(ngModel)]="iconSearchTerms[buttonIndex]" [name]="'iconSearch-' + buttonIndex"
-                      (click)="$event.stopPropagation()" autocomplete="off" />
-                  </li>
-
-                  <!-- Icon list -->
-                  <li *ngFor="let iconClass of getFilteredIconsForButton(buttonIndex)">
-                    <button type="button" class="dropdown-item" (click)="item.buttonIcon = iconClass"
-                      [class.active]="item.buttonIcon === iconClass">
-                      <i [c8yIcon]="iconClass"></i>
-                      <span>{{ iconClass }}</span>
+                  <div class="dropdown icon-dropdown" style="width: 100%" dropdown>
+                    <button type="button" class="btn btn-default dropdown-toggle" style="width: 100%" dropdownToggle>
+                      <span class="d-flex a-i-center">
+                        @if (item.buttonIcon) {
+                          <i [c8yIcon]="item.buttonIcon" class="m-r-8"></i>
+                        }
+                        <span>{{ item.buttonIcon || 'Choose Icon' }}</span>
+                      </span>
+                      <span class="caret"></span>
                     </button>
-                  </li>
 
-                  <!-- No results message -->
-                  <li *ngIf="getFilteredIconsForButton(buttonIndex).length === 0">
-                    <div class="p-16 text-muted text-center">
-                      No icons found matching "{{ iconSearchTerms[buttonIndex] }}"
-                    </div>
-                  </li>
-                </ul>
-              </div>
+                    <ul class="dropdown-menu" *dropdownMenu>
+                      <!-- Search input inside dropdown -->
+                      <li class="search-input-container">
+                        <input type="text" class="form-control input-sm" placeholder="Search icons..."
+                          [(ngModel)]="iconSearchTerms[buttonIndex]" [name]="'iconSearch-' + buttonIndex"
+                          (click)="$event.stopPropagation()" autocomplete="off" />
+                      </li>
 
-              <!-- Display selected icon
-              <div *ngIf="item.buttonIcon" class="m-t-8 p-8 bg-level-1 d-flex a-i-center">
-                <i [c8yIcon]="item.buttonIcon" style="font-size: 20px;"></i>
-                <strong class="m-l-8">{{ item.buttonIcon }}</strong>
-              </div> -->
-            </c8y-form-group>
-
-            <c8y-form-group>
-              <label translate for="buttonTypes">Button size</label>
-              <div class="dropdown" style="width: 100%" dropdown>
-                <button type="button" title="Color of the button" style="width: 100%" dropdownToggle [ngClass]="
-                  'btn btn-default dropdown-toggle c8y-dropdown ' +
-                  (item.buttonSize || 'btn-warning')
-                ">
-                  <span><i [c8yIcon]="item.buttonIcon"></i>
-                    {{
-                    item.buttonSize ? item.buttonSize : 'Choose size'
-                    }}</span>
-                </button>
-
-                <ul class="dropdown-menu" *dropdownMenu>
-                  <li (click)="item.buttonSize = size" *ngFor="let size of buttonSizes">
-                    <button type="button" style="width: 100%" [ngClass]="'btn ' + size">
-                      <i [c8yButton]="item.buttonSize" [c8yIcon]="item.buttonIcon"></i>
-                      {{ size }}
-                    </button>
-                  </li>
-                </ul>
-              </div>
-            </c8y-form-group>
-            <c8y-form-group [hasWarning]="!item.buttonLabel || item.buttonLabel.length === 0">
-              <label translate for="label">Button label</label>
-              <input id="label" class="form-control" type="text" name="label" [maxlength]="254" autocomplete="off"
-                placeholder="e.g. Restart" [(ngModel)]="item.buttonLabel" required />
-              <c8y-messages>
-                <c8y-message *ngIf="!item.buttonLabel || item.buttonLabel.length === 0" translate></c8y-message>
-                <c8y-message name="required" text="'The label is required'"></c8y-message>
-              </c8y-messages>
-            </c8y-form-group>
-
-            <c8y-form-group [hasWarning]="!item.buttonTitle || item.buttonTitle.length === 0">
-              <label translate for="buttonTitle">Button title</label>
-              <input id="buttonTitle" class="form-control" type="text" name="buttonTitle" [maxlength]="254"
-                autocomplete="off" placeholder="e.g. Confirm to restart device" [(ngModel)]="item.buttonTitle"
-                required />
-              <c8y-messages>
-                <c8y-message *ngIf="!item.buttonTitle || item.buttonTitle.length === 0" translate></c8y-message>
-                <c8y-message name="required" text="'The description is required'"></c8y-message>
-              </c8y-messages>
-            </c8y-form-group>
-          </fieldset>
-        </div>
-
-        <div class="col-lg-6">
-          <fieldset class="c8y-fieldset">
-            <legend>Settings</legend>
-            <c8y-form-group>
-              <label translate for="icon">Supported operations</label>
-              <div class="dropdown" style="width: 100%" dropdown>
-                <button style="width: 100%" type="button" title="Choose a supported Device operation" dropdownToggle
-                  class="btn btn-default dropdown-toggle c8y-dropdown">
-                  <span>{{
-                    item.customOperation
-                    ? 'Custom Operation'
-                    : item.operationFragment || 'Supported Operations'
-                    }}</span>
-                  <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu" *dropdownMenu>
-                  <li (click)="
-                      item.operationFragment = operation;
-                      item.customOperation = false
-                    " *ngFor="let operation of supportedOperations">
-                    <button type="button">
-                      {{ operation }}
-                    </button>
-                  </li>
-                  <li (click)="item.customOperation = true">
-                    <button type="button">Custom operation</button>
-                  </li>
-                </ul>
-              </div>
-            </c8y-form-group>
-            <c8y-form-group *ngIf="item.customOperation" [hasWarning]="
-                !item.operationFragment || item.operationFragment.length === 0
-              ">
-              <label translate for="operationFragment">Operation fragment</label>
-              <input id="operationFragment" class="form-control" type="text" name="operationFragment" [maxlength]="254"
-                autocomplete="off" placeholder="e.g. c8y_Restart" [(ngModel)]="item.operationFragment" required />
-              <c8y-messages>
-                <c8y-message *ngIf="
-                    !item.operationFragment || item.operationFragment.length === 0
-                  " translate></c8y-message>
-                <c8y-message name="required" text="'The operation fragment is required'"></c8y-message>
-              </c8y-messages>
-            </c8y-form-group>
-
-            <c8y-form-group>
-              <label translate for="icon">Requires confirmation</label>
-              <label class="c8y-switch" title="{{ 'Active' | translate }}">
-                <input type="checkbox" [(ngModel)]="item.requireConfirmationOperation" />
-                <span></span>
-                <span>
-                  {{ 'Requires confirmation of operation' }}
-                </span>
-              </label>
-
-            </c8y-form-group>
-
-            <c8y-form-group *ngIf="item.requireConfirmationOperation">
-              <label translate for="icon">Confirmation text</label>
-              <input id="confirmationText" class="form-control" type="text" name="confirmationText" [maxlength]="254"
-                autocomplete="off" placeholder="Confirm to send this operation" [(ngModel)]="item.confirmationText" />
-            </c8y-form-group>
-
-          </fieldset>
-        </div>
-
-        <!-- Operation Value Section -->
-        <div class="col-sm-12" *ngIf="item.customOperation">
-          <app-operation-value [(value)]="item.operationValue"
-            (valueChangeDebounced)="onOperationValueChange(buttonIndex)">
-          </app-operation-value>
-        </div>
-
-        <!-- Operation Variables Section -->
-        <div class="col-sm-12" *ngIf="item.operationVariables && item.operationVariables.length > 0">
-          <!-- Operation Variables Section -->
-          <div class="col-sm-12" *ngIf="item.operationVariables && item.operationVariables.length > 0">
-            <fieldset class="c8y-fieldset">
-              <legend>Operation Variables</legend>
-              <div class="alert alert-info m-b-16">
-                <i c8yIcon="info-circle"></i>
-                Define default values and types for variables found in the operation value
-              </div>
-              <div *ngFor="let variable of item.operationVariables; let varIndex = index" class="row m-b-16">
-                <div class="col-sm-12">
-                  <div class="form-block">
-                    <strong>{{ variable.label }}</strong>
-                  </div>
-                </div>
-
-                <!-- Variable Type Dropdown -->
-                <div class="col-sm-4">
-                  <c8y-form-group>
-                    <label translate>Type</label>
-                    <div class="dropdown" style="width: 100%" dropdown>
-                      <button type="button" style="width: 100%" dropdownToggle
-                        class="btn btn-default dropdown-toggle c8y-dropdown">
-                        <span>{{ variable.type || 'text' }}</span>
-                        <span class="caret"></span>
-                      </button>
-                      <ul class="dropdown-menu" *dropdownMenu>
-                        <li (click)="variable.type = type" *ngFor="let type of variableTypes">
-                          <button type="button">
-                            {{ type }}
+                      <!-- Icon list -->
+                      @for (iconClass of getFilteredIconsForButton(buttonIndex); track iconClass) {
+                        <li>
+                          <button type="button" class="dropdown-item" (click)="item.buttonIcon = iconClass"
+                            [class.active]="item.buttonIcon === iconClass">
+                            <i [c8yIcon]="iconClass"></i>
+                            <span>{{ iconClass }}</span>
                           </button>
                         </li>
-                      </ul>
-                    </div>
-                  </c8y-form-group>
-                </div>
+                      }
 
-                <!-- Default Value Input -->
-                <div class="col-sm-8">
+                      <!-- No results message -->
+                      @if (getFilteredIconsForButton(buttonIndex).length === 0) {
+                        <li>
+                          <div class="p-16 text-muted text-center">
+                            No icons found matching "{{ iconSearchTerms[buttonIndex] }}"
+                          </div>
+                        </li>
+                      }
+                    </ul>
+                  </div>
+
+                  <!-- Display selected icon
+                  <div *ngIf="item.buttonIcon" class="m-t-8 p-8 bg-level-1 d-flex a-i-center">
+                    <i [c8yIcon]="item.buttonIcon" style="font-size: 20px;"></i>
+                    <strong class="m-l-8">{{ item.buttonIcon }}</strong>
+                  </div> -->
+                </c8y-form-group>
+
+                <c8y-form-group>
+                  <label translate for="buttonTypes">Button size</label>
+                  <div class="dropdown" style="width: 100%" dropdown>
+                    <button type="button" title="Color of the button" style="width: 100%" dropdownToggle [ngClass]="
+                      'btn btn-default dropdown-toggle c8y-dropdown ' +
+                      (item.buttonSize || 'btn-warning')
+                    ">
+                      <span><i [c8yIcon]="item.buttonIcon || ''"></i>
+                        {{
+                        item.buttonSize ? item.buttonSize : 'Choose size'
+                        }}</span>
+                    </button>
+
+                    <ul class="dropdown-menu" *dropdownMenu>
+                      @for (size of buttonSizes; track size) {
+                        <li (click)="item.buttonSize = size">
+                          <button type="button" style="width: 100%" [ngClass]="'btn ' + size">
+                            <i [c8yIcon]="item.buttonIcon || ''"></i>
+                            {{ size }}
+                          </button>
+                        </li>
+                      }
+                    </ul>
+                  </div>
+                </c8y-form-group>
+                <c8y-form-group [hasWarning]="!item.buttonLabel || item.buttonLabel.length === 0">
+                  <label translate for="label">Button label</label>
+                  <input id="label" class="form-control" type="text" name="label" [maxlength]="254" autocomplete="off"
+                    placeholder="e.g. Restart" [(ngModel)]="item.buttonLabel" required />
+                  <c8y-messages>
+                    @if (!item.buttonLabel || item.buttonLabel.length === 0) {
+                      <c8y-message translate></c8y-message>
+                    }
+                    <c8y-message name="required" text="'The label is required'"></c8y-message>
+                  </c8y-messages>
+                </c8y-form-group>
+
+                <c8y-form-group [hasWarning]="!item.buttonTitle || item.buttonTitle.length === 0">
+                  <label translate for="buttonTitle">Button title</label>
+                  <input id="buttonTitle" class="form-control" type="text" name="buttonTitle" [maxlength]="254"
+                    autocomplete="off" placeholder="e.g. Confirm to restart device" [(ngModel)]="item.buttonTitle"
+                    required />
+                  <c8y-messages>
+                    @if (!item.buttonTitle || item.buttonTitle.length === 0) {
+                      <c8y-message translate></c8y-message>
+                    }
+                    <c8y-message name="required" text="'The description is required'"></c8y-message>
+                  </c8y-messages>
+                </c8y-form-group>
+              </fieldset>
+            </div>
+
+            <div class="col-lg-6">
+              <fieldset class="c8y-fieldset">
+                <legend>Settings</legend>
+                <c8y-form-group>
+                  <label translate for="icon">Supported operations</label>
+                  <div class="dropdown" style="width: 100%" dropdown>
+                    <button style="width: 100%" type="button" title="Choose a supported Device operation" dropdownToggle
+                      class="btn btn-default dropdown-toggle c8y-dropdown">
+                      <span>{{
+                        item.customOperation
+                        ? 'Custom Operation'
+                        : item.operationFragment || 'Supported Operations'
+                        }}</span>
+                      <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" *dropdownMenu>
+                      @for (operation of supportedOperations; track operation) {
+                        <li (click)="
+                            item.operationFragment = operation;
+                            item.customOperation = false
+                          ">
+                          <button type="button">
+                            {{ operation }}
+                          </button>
+                        </li>
+                      }
+                      <li (click)="item.customOperation = true">
+                        <button type="button">Custom operation</button>
+                      </li>
+                    </ul>
+                  </div>
+                </c8y-form-group>
+                @if (item.customOperation) {
+                  <c8y-form-group [hasWarning]="
+                      !item.operationFragment || item.operationFragment.length === 0
+                    ">
+                    <label translate for="operationFragment">Operation fragment</label>
+                    <input id="operationFragment" class="form-control" type="text" name="operationFragment" [maxlength]="254"
+                      autocomplete="off" placeholder="e.g. c8y_Restart" [(ngModel)]="item.operationFragment" required />
+                    <c8y-messages>
+                      @if (!item.operationFragment || item.operationFragment.length === 0) {
+                        <c8y-message translate></c8y-message>
+                      }
+                      <c8y-message name="required" text="'The operation fragment is required'"></c8y-message>
+                    </c8y-messages>
+                  </c8y-form-group>
+                }
+
+                <c8y-form-group>
+                  <label translate for="icon">Requires confirmation</label>
+                  <label class="c8y-switch" title="{{ 'Active' | translate }}">
+                    <input type="checkbox" [(ngModel)]="item.requireConfirmationOperation" />
+                    <span></span>
+                    <span>
+                      {{ 'Requires confirmation of operation' }}
+                    </span>
+                  </label>
+
+                </c8y-form-group>
+
+                @if (item.requireConfirmationOperation) {
                   <c8y-form-group>
-                    <label translate>Default value</label>
-                    <input *ngIf="variable.type === 'text'" class="form-control" type="text"
-                      [name]="'variable-' + buttonIndex + '-' + varIndex" [maxlength]="254" autocomplete="off"
-                      placeholder="Enter default value for {{ variable.label }}" [(ngModel)]="variable.default" />
-
-                    <input *ngIf="variable.type === 'number'" class="form-control" type="number"
-                      [name]="'variable-' + buttonIndex + '-' + varIndex" autocomplete="off"
-                      placeholder="Enter default value for {{ variable.label }}" [(ngModel)]="variable.default" />
-
-                    <small class="help-block">
-                      This variable will be replaced in the operation value
-                    </small>
+                    <label translate for="icon">Confirmation text</label>
+                    <input id="confirmationText" class="form-control" type="text" name="confirmationText" [maxlength]="254"
+                      autocomplete="off" placeholder="Confirm to send this operation" [(ngModel)]="item.confirmationText" />
                   </c8y-form-group>
-                </div>
-              </div>
-            </fieldset>
-          </div>
-        </div>
+                }
 
-        <div class="col-sm-12">
-          <button class="btn btn-danger" (click)="removeButton(buttonIndex)">
-            <i c8yIcon="delete"></i>Delete button
-          </button>
-        </div>
+              </fieldset>
+            </div>
+
+            <!-- Operation Value Section -->
+            @if (item.customOperation) {
+              <div class="col-sm-12">
+                <app-operation-value [(value)]="item.operationValue"
+                  (valueChangeDebounced)="onOperationValueChange(buttonIndex)">
+                </app-operation-value>
+              </div>
+            }
+
+            <!-- Operation Variables Section -->
+            @if (item.operationVariables && item.operationVariables.length > 0) {
+              <div class="col-sm-12">
+                <!-- Operation Variables Section -->
+                @if (item.operationVariables && item.operationVariables.length > 0) {
+                  <div class="col-sm-12">
+                    <fieldset class="c8y-fieldset">
+                      <legend>Operation Variables</legend>
+                      <div class="alert alert-info m-b-16">
+                        <i c8yIcon="info-circle"></i>
+                        Define default values and types for variables found in the operation value
+                      </div>
+                      @for (variable of item.operationVariables; track $index; let varIndex = $index) {
+                        <div class="row m-b-16">
+                          <div class="col-sm-12">
+                            <div class="form-block">
+                              <strong>{{ variable.label }}</strong>
+                            </div>
+                          </div>
+
+                          <!-- Variable Type Dropdown -->
+                          <div class="col-sm-4">
+                            <c8y-form-group>
+                              <label translate>Type</label>
+                              <div class="dropdown" style="width: 100%" dropdown>
+                                <button type="button" style="width: 100%" dropdownToggle
+                                  class="btn btn-default dropdown-toggle c8y-dropdown">
+                                  <span>{{ variable.type || 'text' }}</span>
+                                  <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" *dropdownMenu>
+                                  @for (type of variableTypes; track type) {
+                                    <li (click)="variable.type = type">
+                                      <button type="button">
+                                        {{ type }}
+                                      </button>
+                                    </li>
+                                  }
+                                </ul>
+                              </div>
+                            </c8y-form-group>
+                          </div>
+
+                          <!-- Default Value Input -->
+                          <div class="col-sm-8">
+                            <c8y-form-group>
+                              <label translate>Default value</label>
+                              @if (variable.type === 'text') {
+                                <input class="form-control" type="text"
+                                  [name]="'variable-' + buttonIndex + '-' + varIndex" [maxlength]="254" autocomplete="off"
+                                  placeholder="Enter default value for {{ variable.label }}" [(ngModel)]="variable.default" />
+                              }
+
+                              @if (variable.type === 'number') {
+                                <input class="form-control" type="number"
+                                  [name]="'variable-' + buttonIndex + '-' + varIndex" autocomplete="off"
+                                  placeholder="Enter default value for {{ variable.label }}" [(ngModel)]="variable.default" />
+                              }
+
+                              <small class="help-block">
+                                This variable will be replaced in the operation value
+                              </small>
+                            </c8y-form-group>
+                          </div>
+                        </div>
+                      }
+                    </fieldset>
+                  </div>
+                }
+              </div>
+            }
+
+            <div class="col-sm-12">
+              <button class="btn btn-danger" (click)="removeButton(buttonIndex)">
+                <i c8yIcon="delete"></i>Delete button
+              </button>
+            </div>
+          </div>
+        }
       </div>
-    </div>
+    }
 
     <div class="col-sm-12">
-      <div *ngIf="config?.buttons?.length > 0" class="col-sm-12">
-        <button class="m-t-16 m-b-16 btn btn-primary" (click)="addNewButton()">
-          <i c8yIcon="plus"></i>Add button
-        </button>
-      </div>
+      @if ((config.buttons?.length ?? 0) > 0) {
+        <div class="col-sm-12">
+          <button class="m-t-16 m-b-16 btn btn-primary" (click)="addNewButton()">
+            <i c8yIcon="plus"></i>Add button
+          </button>
+        </div>
+      }
     </div>
   </div>
 

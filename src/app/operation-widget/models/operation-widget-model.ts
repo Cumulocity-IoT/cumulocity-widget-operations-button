@@ -2,6 +2,7 @@ export interface IOperationWidgetConfig {
   device?: {
     id: string;
     name?: string;
+    [key: string]: unknown;
   };
   buttons?: IOperationButtonConfig[];
 }

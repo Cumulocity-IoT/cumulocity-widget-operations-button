@@ -63,7 +63,7 @@ export class OperationWidgetConfigComponent implements DynamicComponent, OnInit 
       this.widgetConfigService.setPreview(template);
       return;
     }
-    this.widgetConfigService.setPreview(null);
+    this.widgetConfigService.setPreview(true);
   }
 
   ngOnInit(): void {
@@ -136,12 +136,12 @@ export class OperationWidgetConfigComponent implements DynamicComponent, OnInit 
     });
 
     if (this.config.device && this.config.device['c8y_SupportedOperations']) {
-      this.supportedOperations = this.config.device['c8y_SupportedOperations'];
+      this.supportedOperations = this.config.device['c8y_SupportedOperations'] as string[];
     }
   }
 
   removeButton(index: number): void {
-    this.config.buttons.splice(index, 1);
+    this.config.buttons?.splice(index, 1);
     // Clean up filter pipes
     this.iconFilterPipes.delete(index);
     this.iconSearchPatterns.delete(index);

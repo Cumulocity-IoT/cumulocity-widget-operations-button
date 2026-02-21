@@ -3,8 +3,10 @@
   class="btn"
   [ngClass]="classes"
   [title]="config.buttonTitle"
-  (click)="openModal(confirm, 'modal-sm')">
-  <i *ngIf="config?.buttonIcon" [c8yIcon]="config.buttonIcon"></i>
+  (click)="openModal(confirm, 'modal-lg')">
+  @if (config.buttonIcon) {
+    <i [c8yIcon]="config.buttonIcon"></i>
+  }
   {{ config.buttonLabel }}
 </button>
 
@@ -22,7 +24,7 @@
           <button
             title="Cancel"
             class="btn btn-default"
-            (click)="modalRef.hide()">
+            (click)="modalRef?.hide()">
             Cancel
           </button>
           <button
