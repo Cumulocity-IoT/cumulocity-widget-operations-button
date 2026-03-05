@@ -24,7 +24,6 @@ export default {
         name: "Operation Button Widget",
         module: 'OperationButtonWidgetModule',
         path: './src/app/index.ts',
-        readmePath: './src/app/README.md',
         description: 'Widget to create an operation'
       },
     ]
