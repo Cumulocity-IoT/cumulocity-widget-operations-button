@@ -11,7 +11,7 @@ This widget plugin allows you to send operations to a selected device in Cumuloc
 
 <br/>
 <p align="center">
-<img src="src/assets/operation-button-pr.png"  style="width: 80%;" />
+<img src="assets/operation-button-pr.png"  style="width: 80%;" />
 </p>
 <br/>
 
