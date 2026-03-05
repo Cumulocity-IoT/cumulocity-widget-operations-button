@@ -17,6 +17,7 @@ export class OperationValueComponent implements OnDestroy {
   @Output() valueChangeDebounced = new EventEmitter<string>();
 
   isValidJson: boolean = true;
+  readonly helpMessage = `For variable in options use notation \${variable}, e.g. { "c8y_Command": { "retries": "\${retryCount}" } }`;
   private valueSubject = new Subject<string>();
 
   constructor() {
@@ -34,6 +35,15 @@ export class OperationValueComponent implements OnDestroy {
     this.validateJson(newValue);
     this.valueChange.emit(newValue);
     this.valueSubject.next(newValue);
+  }
+
+  formatJson(): void {
+    try {
+      const formatted = JSON.stringify(JSON.parse(this.value), null, 2);
+      this.onUpdate(formatted);
+    } catch {
+      // isValidJson is already false, button is disabled — no-op
+    }
   }
 
   private validateJson(value: string): void {

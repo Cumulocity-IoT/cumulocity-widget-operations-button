@@ -1,5 +1,15 @@
 <c8y-form-group [hasWarning]="!value || value.length === 0 || !isValidJson">
-  <label translate for=" operationValue">Operation value</label>
+  <label translate for="operationValue">Operation incl. fragment</label>
+  <div class="d-flex j-c-end m-b-4">
+    <button
+      type="button"
+      class="btn btn-xs btn-default"
+      [disabled]="!isValidJson"
+      (click)="formatJson()"
+      title="Format JSON">
+      <i c8yIcon="code"></i> Format
+    </button>
+  </div>
   <textarea
     c8y-textarea-autoresize
     id="operationValue"
@@ -7,15 +17,14 @@
     type="text"
     name="operationValue"
     autocomplete="off"
-    placeholder="e.g. {text: 'Write newValue:'}"
+    placeholder='e.g. { "c8y_Command": { "text": "restart" } }'
     [(ngModel)]="value"
     required
     (ngModelChange)="onUpdate($event)"></textarea>
-  <c8y-messages>
-    <c8y-message
-      name="required"
-      text="The operation value is required"></c8y-message>
-  </c8y-messages>
+  <c8y-messages
+    [helpMessage]="helpMessage"
+    id="helpBlock1"
+  ></c8y-messages>
   @if (value && value.length > 0 && !isValidJson) {
     <small class="form-control-feedback-message">
       The operation value is not a valid json

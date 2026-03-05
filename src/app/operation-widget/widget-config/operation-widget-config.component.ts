@@ -68,6 +68,16 @@ export class OperationWidgetConfigComponent implements DynamicComponent, OnInit 
 
   ngOnInit(): void {
     this.widgetConfigService.addOnBeforeSave(config => {
+      const invalidButtons = (this.config.buttons ?? [])
+        .map((button, i) => ({ button, i }))
+        .filter(({ button }) => button.customOperation && !this.isValidJson(button.operationValue));
+
+      if (invalidButtons.length > 0) {
+        const labels = invalidButtons.map(({ i }) => `Button ${i + 1}`).join(', ');
+        this.alert.danger(`Invalid JSON in operation value for: ${labels}. Please fix before saving.`);
+        return false;
+      }
+
       this.alert.success('Widget added successfully', JSON.stringify(config, null, 2));
       return true;
     });
@@ -232,6 +242,15 @@ export class OperationWidgetConfigComponent implements DynamicComponent, OnInit 
   /**
    * Get filtered icons for a specific button
    */
+  isValidJson(value: string): boolean {
+    try {
+      JSON.parse(value);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
   getFilteredIconsForButton(buttonIndex: number): string[] {
     const searchTerm = this.iconSearchTerms[buttonIndex] || '';
 

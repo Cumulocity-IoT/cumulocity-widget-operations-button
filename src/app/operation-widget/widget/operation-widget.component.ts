@@ -231,19 +231,15 @@ export class OperationWidgetComponent implements OnInit, OnChanges {
         // Parse the operation value
         const parsedOperationValue = JSON.parse(operationValue);
 
-        console.log('Creating operation:', {
-          deviceId: this.config.device.id,
-          description: button.buttonTitle || button.buttonLabel,
-          [button.operationFragment]: parsedOperationValue,
-        });
+        const payload = button.customOperation
+          ? { deviceId: this.config.device.id, description: button.buttonTitle || button.buttonLabel, ...parsedOperationValue }
+          : { deviceId: this.config.device.id, description: button.buttonTitle || button.buttonLabel, [button.operationFragment]: parsedOperationValue };
+
+        console.log('Creating operation:', payload);
 
         // Create the operation
         this.operationsService
-          .create({
-            deviceId: this.config.device.id,
-            description: button.buttonTitle || button.buttonLabel,
-            [button.operationFragment]: parsedOperationValue,
-          })
+          .create(payload)
           .then(() => {
             this.alertService.success(
               `Operation '${button.buttonLabel}' successfully created.`

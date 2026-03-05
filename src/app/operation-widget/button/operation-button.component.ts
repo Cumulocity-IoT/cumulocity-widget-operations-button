@@ -6,20 +6,19 @@ import {
   OnChanges,
   SimpleChanges,
   Output,
-  TemplateRef,
 } from '@angular/core';
 import { IOperationButtonConfig } from '../models/operation-widget-model';
-import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { firstValueFrom } from 'rxjs';
 import { CommonModule, NgClass } from '@angular/common';
 import { IconDirective } from '@c8y/ngx-components';
+import { ConfirmationModalComponent } from './confirmation-modal.component';
 
 @Component({
   selector: 'app-operation-button',
   templateUrl: './operation-button.component.html',
   standalone: true,
-  imports: [
-    CommonModule, NgClass, IconDirective
-  ]
+  imports: [CommonModule, NgClass, IconDirective]
 })
 export class OperationButtonComponent implements OnInit, OnChanges {
   @Input() config: IOperationButtonConfig = {
@@ -31,12 +30,10 @@ export class OperationButtonComponent implements OnInit, OnChanges {
     requireConfirmationOperation: false
   };
   @Output() clickedOperation = new EventEmitter<IOperationButtonConfig>();
-  modalRef?: BsModalRef;
 
+  constructor(private modalService: BsModalService) {}
 
-  constructor(private modalService: BsModalService) { }
-
-   get classes(): string {
+  get classes(): string {
     return `${this.config?.buttonType || ''} ${this.config?.buttonSize || ''}`.trim();
   }
 
@@ -50,20 +47,22 @@ export class OperationButtonComponent implements OnInit, OnChanges {
     }
   }
 
-  private updateClasses(): void {
-    // this.classes = `${this.config?.buttonType || ''} ${this.config?.buttonSize || ''}`.trim();
-  }
+  private updateClasses(): void {}
 
-  createOperation(event: Event): void {
-    event.stopPropagation();
-    this.clickedOperation.emit(this.config);
-  }
-
-  openModal(template: TemplateRef<any>, size: 'modal-lg'): void {
+  async openModal(): Promise<void> {
     if (!this.config.requireConfirmationOperation) {
       this.clickedOperation.emit(this.config);
     } else {
-      this.modalRef = this.modalService.show(template, { class: size });
+      const initialState = {
+        title: this.config.buttonTitle,
+        message: this.config.confirmationText || 'Confirm to send this operation'
+      };
+      const modalRef = this.modalService.show(ConfirmationModalComponent, { initialState });
+      if (!modalRef.content) return;
+      const result = await firstValueFrom(modalRef.content.closeSubject);
+      if (result) {
+        this.clickedOperation.emit(this.config);
+      }
     }
   }
 }

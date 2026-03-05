@@ -7,7 +7,7 @@ export default {
     description,
     version,
     name,
-      key: 'c8y-pkg-operation-widget-key',
+    key: 'c8y-pkg-operation-widget-key',
     contentSecurityPolicy:
       "base-uri 'none'; default-src 'self' 'unsafe-inline' http: https: ws: wss:; connect-src 'self' http: https: ws: wss:;  script-src 'self' *.bugherd.com *.twitter.com *.twimg.com *.aptrinsic.com 'unsafe-inline' 'unsafe-eval' data:; style-src * 'unsafe-inline' blob:; img-src * data: blob:; font-src * data:; frame-src *; worker-src 'self' blob:;",
     dynamicOptionsUrl: true,
@@ -46,6 +46,9 @@ export default {
       'ngx-bootstrap',
       '@ngx-translate/core',
       '@ngx-formly/core'
+    ],
+    "copy": [
+      { "from": "src/assets/operation-button-pr.png", "to": "assets/operation-button-pr.png" }
     ]
   }
 } as const satisfies ConfigurationOptions;

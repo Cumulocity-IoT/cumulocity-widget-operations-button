@@ -3,10 +3,11 @@
   "author": "christof.strack@cumulocity.com",
   "license":"Apache-2.0",
   "description": "Widget to create an operation",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start:cockpit": "npm start -- --shell cockpit",
     "build": "ng build",
     "build-ci": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
