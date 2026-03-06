@@ -9,11 +9,7 @@ This widget plugin allows you to send operations to a selected device in Cumuloc
 - **Dynamic UI**: Update parameter values directly in the UI when invoking the operation
 - **Easy Integration**: Install as a plugin to any Cumulocity application
 
-<br/>
-<p align="center">
-<img src="src/assets/operation-button-pr.png"  style="width: 80%;" />
-</p>
-<br/>
+![Sample Image](assets/operation-button-pr.png)
 
 ## Configuration
 

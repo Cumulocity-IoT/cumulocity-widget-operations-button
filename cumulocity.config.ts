@@ -47,7 +47,8 @@ export default {
       '@ngx-formly/core'
     ],
     "copy": [
-      { "from": "src/assets/operation-button-pr.png", "to": "assets/operation-button-pr.png" }
+      { from: "src/assets/operation-button-pr.png", to: "assets/operation-button-pr.png" }, 
+      { from: 'README.md', to: 'README.md'},
     ]
   }
 } as const satisfies ConfigurationOptions;
