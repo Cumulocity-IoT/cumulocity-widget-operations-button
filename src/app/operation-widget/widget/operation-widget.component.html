@@ -3,7 +3,7 @@
     <div class="m-b-24">
       <!-- Button Instance -->
       <div class="m-b-8">
-        <app-operation-button [config]="item" (clickedOperation)="onButtonClick(item, i)">
+        <app-operation-button [config]="item" (clickedOperation)="onButtonClick(item)">
         </app-operation-button>
       </div>
 
@@ -11,44 +11,42 @@
       @if (hasVariables(item)) {
         <div>
           <div
-            (click)="toggleVariables(i); $event.stopPropagation()"
-            style="cursor: pointer; display: flex; align-items: center; padding: 8px 0;">
+            class="op-variables-toggle"
+            (click)="toggleVariables(item); $event.stopPropagation()">
             <i
-              [c8yIcon]="isExpanded(i) ? 'chevron-down' : 'chevron-right'"
-              style="font-size: 16px; margin-right: 8px; min-width: 16px;">
+              class="op-variables-toggle__icon"
+              [c8yIcon]="isExpanded(item) ? 'chevron-down' : 'chevron-right'">
             </i>
-            <span style="font-size: 14px; white-space: nowrap;">
+            <span class="op-variables-toggle__label">
               Parameters ({{ item.operationVariables?.length }})
             </span>
           </div>
 
-          <div class="collapse" [collapse]="!isExpanded(i)" [isAnimated]="true">
-            <div class="bg-level-1 p-16 m-t-8" style="border-left: 3px solid #1776bf;">
-              @for (variable of item.operationVariables; track $index) {
+          <div class="collapse" [collapse]="!isExpanded(item)" [isAnimated]="true">
+            <div class="bg-level-1 p-16 m-t-8 op-variables-panel">
+              @for (variable of item.operationVariables; track variable.varName) {
                 <div class="m-b-16">
-                  <label style="display: block; margin-bottom: 4px;">
+                  <label class="op-variables-panel__label">
                     <strong>{{ variable.label }}</strong>
                     @if (variable.type) {
                       <span class="text-muted"> ({{ variable.type }})</span>
                     }
                   </label>
 
-                  <!-- Text input -->
                   @if (variable.type === 'text' || !variable.type) {
                     <input
                       class="form-control"
                       type="text"
-                      [(ngModel)]="getVariableValues(i)[variable.varName]"
+                      [(ngModel)]="getVariableValues(item)[variable.varName]"
                       [name]="'var-' + i + '-' + variable.varName"
                       [placeholder]="variable.default || 'Enter value'" />
                   }
 
-                  <!-- Number input -->
                   @if (variable.type === 'number') {
                     <input
                       class="form-control"
                       type="number"
-                      [(ngModel)]="getVariableValues(i)[variable.varName]"
+                      [(ngModel)]="getVariableValues(item)[variable.varName]"
                       [name]="'var-' + i + '-' + variable.varName"
                       [placeholder]="variable.default || 'Enter value'" />
                   }
